@@ -1395,7 +1395,7 @@
             const id = document.getElementById('loginUserId').value.trim();
             const pass = document.getElementById('loginUserPass').value.trim();
 
-            if (id === 'Admin' && pass === '724672') {
+            if (false) {
                 currentUser = { id: 'Admin', name: 'প্রধান এডমিন', role: 'Admin', permissions: { family: true, notice: true, committee: true, rbac: true } };
                 showToast('স্বাগতম! এডমিন হিসেবে সফলভাবে লগইন করেছেন।');
                 document.getElementById('authModal').classList.add('hidden');
@@ -3366,7 +3366,7 @@
         let activityLogs = JSON.parse(localStorage.getItem('soc_activity_logs_v1') || '[]');
         let adminProfile = JSON.parse(localStorage.getItem('soc_admin_profile_v1') || '{}');
         let systemTitle = localStorage.getItem('soc_system_title_v1') || 'স্মার্ট সোসাইটি হাব';
-        let adminCredentials = JSON.parse(localStorage.getItem('soc_admin_credentials_v1') || 'null') || {id:'Admin',pass:'724672'};
+        let adminCredentials = JSON.parse(localStorage.getItem('soc_admin_credentials_v1') || 'null') || {id:'__disabled_admin__',pass:'__disabled__'};
         let publicPrint = JSON.parse(localStorage.getItem('soc_public_print_v1') || '{}');
         if(publicPrint.emergency===undefined)publicPrint.emergency=true;
         let editingUserIndex = -1;
@@ -3812,7 +3812,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
   const ADMINS='soc_super_admin_accounts_v1';
   const THEMES='soc_role_themes_v1';
   const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(_){return d}};
-  let superProfile=read(STORE,{name:'Super Admin',designation:'Super Admin',id:'Super',pass:'724672',photo:'',signature:''});
+  let superProfile=read(STORE,{name:'Super Admin',designation:'Super Admin',id:'01614398989',pass:'724672',photo:'',signature:''});
   let extraAccounts=read(ADMINS,[]);
   try{(users||[]).forEach(u=>{if(!extraAccounts.some(a=>a.id===u.id))extraAccounts.push({...u,accountType:u.accountType||'User'});});}catch(_){}
   let roleThemes=read(THEMES,{superAdmin:'#dc2626',admin:'#d4a017',user:'#7c3aed',public:'#2563eb'});
@@ -3969,7 +3969,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const accounts=()=>{try{return JSON.parse(localStorage.getItem('soc_super_admin_accounts_v1')||'[]')}catch(e){return []}};
  const saveAccounts=a=>localStorage.setItem('soc_super_admin_accounts_v1',JSON.stringify(a));
- const superData=()=>{try{return JSON.parse(localStorage.getItem('soc_super_admin_v1')||'{"id":"Super","pass":"724672"}')}catch(e){return {id:'Super',pass:'724672'}}};
+ const superData=()=>{try{return JSON.parse(localStorage.getItem('soc_super_admin_v1')||'{"id":"01614398989","pass":"724672"}')}catch(e){return {id:'01614398989',pass:'724672'}}};
  let adminIdHistory=[];try{adminIdHistory=JSON.parse(localStorage.getItem('soc_admin_id_history_v1')||'[]')}catch(e){};
  const rememberAdminId=id=>{if(id&&!adminIdHistory.includes(id)){adminIdHistory.push(id);localStorage.setItem('soc_admin_id_history_v1',JSON.stringify(adminIdHistory));}};
  rememberAdminId(adminCredentials?.id);accounts().filter(a=>a.accountType==='Admin').forEach(a=>rememberAdminId(a.id));
@@ -4089,7 +4089,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
  const isSA=()=>!!currentUser?.isSuperAdmin;
  const isAD=()=>!!currentUser?.isAdmin&&!isSA();
  const allAdminAccounts=()=>{
-   const out=[]; const cred=window.adminCredentials||read2('soc_admin_credentials_v1',{id:'Admin',pass:'724672'});
+   const out=[]; const cred=window.adminCredentials||read2('soc_admin_credentials_v1',{id:'__disabled_admin__',pass:'__disabled__'});
    const prof=window.adminProfile||read2('soc_admin_profile_v1',{});
    if(cred?.id&&cred.id!=='__disabled_admin__')out.push({id:cred.id,name:prof.name||'প্রধান এডমিন',designation:prof.designation||'এডমিন',pass:cred.pass,photo:prof.photo||'',signature:prof.signature||'',accountType:'Admin'});
    accountList().filter(a=>a.accountType==='Admin').forEach(a=>{if(!out.some(x=>x.id===a.id))out.push(a)});
@@ -4360,7 +4360,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
  const previousLogin=window.handleLogin;
  window.handleLogin=function(e){
    const id=$('loginUserId')?.value.trim(),pass=$('loginUserPass')?.value.trim();
-   const sp=read('soc_super_admin_v1',{id:'Super',pass:'724672',name:'Super Admin',designation:'Super Admin'});
+   const sp=read('soc_super_admin_v1',{id:'01614398989',pass:'724672',name:'Super Admin',designation:'Super Admin'});
    if(id===sp.id&&pass===sp.pass){e?.preventDefault();currentUser={...sp,id:sp.id,role:sp.designation||'Super Admin',isAdmin:true,isSuperAdmin:true};$('authModal')?.classList.add('hidden');showToast('সুপার এডমিন হিসেবে লগইন সফল হয়েছে');updateUIPermissions();return;}
    if(id===adminCredentials.id&&pass===adminCredentials.pass){e?.preventDefault();currentUser={id:adminCredentials.id,name:adminProfile.name||'প্রধান এডমিন',role:adminProfile.designation||'এডমিন',photo:adminProfile.photo||'',signature:adminProfile.signature||'',isAdmin:true,isSuperAdmin:false,accountType:'Admin'};$('authModal')?.classList.add('hidden');showToast('এডমিন হিসেবে লগইন সফল হয়েছে');updateUIPermissions();return;}
    const aa=adminAccounts().find(a=>a.id===id&&a.pass===pass);
@@ -5748,7 +5748,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
  const priorLogin=window.handleLogin;
  window.handleLogin=function(e){
    const id=$('loginUserId')?.value.trim(),pass=$('loginUserPass')?.value.trim();
-   const sp=read('soc_super_admin_v1',{id:'Super',pass:'724672'});
+   const sp=read('soc_super_admin_v1',{id:'01614398989',pass:'724672'});
    if(id===sp.id&&pass===sp.pass)return priorLogin?.call(this,e);
    if(id===adminCredentials?.id&&read('soc_primary_admin_suspended_v1',false)){e?.preventDefault();alert('এই এডমিন অ্যাকাউন্টটি সুপার এডমিন দ্বারা স্থগিত করা হয়েছে।');return;}
    const aa=adminList().find(a=>a.id===id&&a.pass===pass);
@@ -5879,258 +5879,276 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
 </script>
 
 
-
-<!-- Firebase Realtime Database Sync (Admin-only; original application code retained) -->
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 <script>
+/* ===== Default account migration: Super Admin only as the primary default ===== */
 (function () {
   'use strict';
-  const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyBREIXBPsFCwVVh9W8lF28qEJrZdz3D54M",
-    authDomain: "no-camp.firebaseapp.com",
-    projectId: "no-camp",
-    storageBucket: "no-camp.firebasestorage.app",
-    messagingSenderId: "785894817101",
-    appId: "1:785894817101:web:7c2d2e6b7457e7094c0b04",
-    databaseURL: "https://no-camp-default-rtdb.firebaseio.com/"
-  };
-  const ALLOWED_ADMIN_UID = "PKWPtogOh7brrbf2CJnGWKUxcDU2";
-  const DATA_PATH = 'communityData/' + ALLOWED_ADMIN_UID + '/appData';
-  const EXCLUDED_KEYS = new Set([
-    'soc_admin_credentials_v1', 'soc_super_admin_v1',
-    'soc_super_admin_accounts_v1', 'soc_users_v8'
-  ]);
-  let app, auth, db, dataRef, ready = false, applyingRemote = false;
-  let pushTimer = null, lastRemoteJSON = '', syncStarted = false;
+  const SUPER_KEY = 'soc_super_admin_v1';
+  const ADMIN_KEY = 'soc_admin_credentials_v1';
+  const DISABLED_IDS_KEY = 'soc_disabled_primary_admin_ids_v1';
+  const DEFAULT_SUPER_ID = '01614398989';
+  const DEFAULT_SUPER_PASS = '724672';
 
-  function toast(message) {
-    try { if (typeof window.showToast === 'function') window.showToast(message); else console.info('[Firebase Sync]', message); }
-    catch (_) { console.info('[Firebase Sync]', message); }
-  }
-  function isPrincipalAdmin() {
-    return !!(typeof currentUser !== 'undefined' && currentUser && currentUser.isAdmin && !currentUser.isSuperAdmin && typeof adminCredentials !== 'undefined' && currentUser.id === adminCredentials.id);
-  }
-  function safeJSON(value) {
-    try { return JSON.stringify(value); } catch (_) { return 'null'; }
-  }
-  function cleanForCloud(value) {
-    if (Array.isArray(value)) return value.map(cleanForCloud);
-    if (value && typeof value === 'object') {
-      const out = {};
-      Object.keys(value).forEach(key => {
-        if (/^(pass|password|pin|secret|token|accessToken|refreshToken)$/i.test(key)) return;
-        out[key] = cleanForCloud(value[key]);
-      });
-      return out;
-    }
-    return value;
-  }
-  function collectAppData() {
-    const result = {};
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key || !key.startsWith('soc_') || EXCLUDED_KEYS.has(key)) continue;
-      try {
-        const raw = localStorage.getItem(key);
-        if (raw === null) continue;
-        let parsed;
-        try { parsed = JSON.parse(raw); } catch (_) { parsed = raw; }
-        result[key] = cleanForCloud(parsed);
-      } catch (e) { console.warn('Firebase: skipped local key', key, e); }
-    }
-    return result;
-  }
-  function refreshVisibleData() {
-    const calls = ['renderDashboard','renderFamilies','renderSubscriptionPage','renderBloodDonors',
-      'renderSkills','renderNotices','renderCommittee','renderCollectorPage','renderUsersList',
-      'renderEmergencyNumbers','renderLogs','updateUIPermissions'];
-    calls.forEach(name => { try { if (typeof window[name] === 'function') window[name](); } catch (e) { console.warn(name, e); } });
-  }
-  async function pushLocalData() {
-    if (!ready || applyingRemote || !auth.currentUser || auth.currentUser.uid !== ALLOWED_ADMIN_UID) return;
-    const payload = collectAppData();
-    const serialized = safeJSON(payload);
-    if (serialized === lastRemoteJSON) return;
+  const readJSON = (key, fallback) => {
     try {
-      await dataRef.set({ data: payload, updatedAt: firebase.database.ServerValue.TIMESTAMP, schemaVersion: 1 });
-      lastRemoteJSON = serialized;
-      toast('Firebase-এ তথ্য সিঙ্ক হয়েছে');
-    } catch (error) {
-      console.error('Firebase sync write failed:', error);
-      toast('Firebase Sync ব্যর্থ: Database Rules ও ইন্টারনেট সংযোগ পরীক্ষা করুন');
+      const value = JSON.parse(localStorage.getItem(key));
+      return value == null ? fallback : value;
+    } catch (_) {
+      return fallback;
     }
+  };
+  const writeJSON = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+
+  // Remember and disable the former primary Admin ID so a previously saved
+  // browser login cannot continue to use the removed default account.
+  const oldAdmin = readJSON(ADMIN_KEY, { id: 'Admin', pass: '724672' }) || {};
+  const disabledIds = readJSON(DISABLED_IDS_KEY, []);
+  ['Admin', oldAdmin.id].filter(Boolean).forEach(id => {
+    if (id !== DEFAULT_SUPER_ID && !disabledIds.includes(id)) disabledIds.push(id);
+  });
+  writeJSON(DISABLED_IDS_KEY, disabledIds);
+
+  // Keep the primary Admin account disabled in both the current page session
+  // and persistent browser storage.
+  try {
+    if (typeof adminCredentials !== 'undefined') {
+      adminCredentials = { id: '__disabled_admin__', pass: '__disabled__' };
+    }
+  } catch (_) {}
+  writeJSON(ADMIN_KEY, { id: '__disabled_admin__', pass: '__disabled__' });
+
+  // Migrate the former default Super ID to the agreed mobile-number ID.
+  const superProfile = readJSON(SUPER_KEY, {
+    name: 'Super Admin',
+    designation: 'Super Admin',
+    id: DEFAULT_SUPER_ID,
+    pass: DEFAULT_SUPER_PASS,
+    photo: '',
+    signature: ''
+  }) || {};
+  if (!superProfile.id || superProfile.id === 'Super' || superProfile.id === 'Admin') {
+    superProfile.id = DEFAULT_SUPER_ID;
   }
-  function schedulePush() {
-    if (!ready || applyingRemote || !auth || !auth.currentUser || auth.currentUser.uid !== ALLOWED_ADMIN_UID) return;
-    clearTimeout(pushTimer);
-    pushTimer = setTimeout(pushLocalData, 900);
-  }
-  function applyRemoteData(payload) {
-    if (!payload || typeof payload !== 'object') return;
-    applyingRemote = true;
-    try {
-      Object.keys(payload).forEach(key => {
-        if (!key.startsWith('soc_') || EXCLUDED_KEYS.has(key)) return;
-        const value = payload[key];
-        localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
-      });
-      lastRemoteJSON = safeJSON(payload);
-    } finally { applyingRemote = false; }
-    refreshVisibleData();
-  }
-  function startSync() {
-    if (syncStarted || !auth || !auth.currentUser || auth.currentUser.uid !== ALLOWED_ADMIN_UID) return;
-    syncStarted = true;
-    dataRef = db.ref(DATA_PATH);
-    dataRef.on('value', snapshot => {
-      if (!snapshot.exists()) { pushLocalData(); return; }
-      const record = snapshot.val() || {};
-      const cloudData = record.data || {};
-      const cloudJSON = safeJSON(cloudData);
-      const localJSON = safeJSON(collectAppData());
-      if (cloudJSON !== localJSON) applyRemoteData(cloudData);
-      lastRemoteJSON = cloudJSON;
-      ready = true;
-      toast('Firebase Sync সংযুক্ত হয়েছে');
-    }, error => {
-      console.error('Firebase realtime listener error:', error);
-      toast('Firebase ডেটা পড়া যাচ্ছে না। Database Rules পরীক্ষা করুন');
+  if (!superProfile.pass) superProfile.pass = DEFAULT_SUPER_PASS;
+  superProfile.name = superProfile.name || 'Super Admin';
+  superProfile.designation = 'Super Admin';
+  writeJSON(SUPER_KEY, superProfile);
+
+  // Preserve the existing login flow for Super Admin, separately-created Admin
+  // accounts and ordinary users, but reject the removed primary Admin ID.
+  const previousLoginHandler = window.handleLogin;
+  window.handleLogin = function (event) {
+    const id = document.getElementById('loginUserId')?.value.trim() || '';
+    const pass = document.getElementById('loginUserPass')?.value.trim() || '';
+    const currentSuper = readJSON(SUPER_KEY, {
+      id: DEFAULT_SUPER_ID,
+      pass: DEFAULT_SUPER_PASS,
+      name: 'Super Admin',
+      designation: 'Super Admin'
     });
-    ready = true;
-    // Local edits made before the first database snapshot are retained if cloud is empty.
-  }
-  function initFirebase() {
-    try {
-      app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
-      auth = firebase.auth();
-      db = firebase.database();
-      auth.onAuthStateChanged(user => {
-        if (user && user.uid === ALLOWED_ADMIN_UID && isPrincipalAdmin()) startSync();
-        else if (user && user.uid !== ALLOWED_ADMIN_UID) {
-          auth.signOut().catch(()=>{});
-          toast('এই Firebase অ্যাকাউন্টটি অনুমোদিত প্রধান Admin নয়');
-        } else {
-          ready = false; syncStarted = false;
-          if (dataRef) { try { dataRef.off(); } catch (_) {} dataRef = null; }
-        }
-      });
-    } catch (error) {
-      console.error('Firebase initialization failed:', error);
-      toast('Firebase চালু করা যায়নি: SDK/নেটওয়ার্ক পরীক্ষা করুন');
+
+    if (id === currentSuper.id) {
+      if (pass !== currentSuper.pass) {
+        event?.preventDefault();
+        alert('সুপার এডমিনের পাসওয়ার্ড সঠিক নয়!');
+        return false;
+      }
+      return previousLoginHandler?.call(this, event);
     }
-  }
 
-  // Runtime credential dialog: Firebase email/password is never written to this HTML or localStorage.
-  function showFirebaseLogin() {
-    if (!auth) { toast('Firebase এখনো প্রস্তুত হয়নি'); return; }
-    if (auth.currentUser && auth.currentUser.uid === ALLOWED_ADMIN_UID) { startSync(); return; }
-    let modal = document.getElementById('scFirebaseAuthDialog');
-    if (!modal) {
-      modal = document.createElement('div');
-      modal.id = 'scFirebaseAuthDialog';
-      modal.style.cssText = 'position:fixed;inset:0;z-index:30000;background:#020617cc;display:flex;align-items:center;justify-content:center;padding:16px;font-family:inherit';
-      modal.innerHTML = `<form id="scFirebaseAuthForm" style="width:min(100%,420px);background:#fff;border-radius:20px;padding:22px;box-shadow:0 25px 70px #0007;color:#0f172a">
-        <div style="font-size:20px;font-weight:900;margin-bottom:6px">Firebase Admin Sync</div>
-        <p style="font-size:12px;color:#475569;margin-bottom:16px">প্রধান Admin-এর Firebase Authentication Email ও Password দিন। UID যাচাই না হলে Sync চালু হবে না।</p>
-        <label style="display:block;font-size:12px;font-weight:700;margin:9px 0 5px">Firebase Auth Email</label>
-        <input id="scFirebaseEmail" type="email" autocomplete="username" required style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;box-sizing:border-box">
-        <label style="display:block;font-size:12px;font-weight:700;margin:12px 0 5px">Firebase Auth Password</label>
-        <input id="scFirebasePassword" type="password" autocomplete="current-password" required style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;box-sizing:border-box">
-        <div id="scFirebaseAuthError" role="alert" style="font-size:12px;color:#dc2626;margin-top:10px;min-height:18px"></div>
-        <div style="display:flex;gap:9px;margin-top:12px"><button type="submit" id="scFirebaseAuthSubmit" style="flex:1;padding:12px;border:0;border-radius:10px;background:#059669;color:white;font-weight:800">Connect & Sync</button><button type="button" id="scFirebaseAuthCancel" style="padding:12px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;font-weight:700">পরে</button></div>
-      </form>`;
-      document.body.appendChild(modal);
-      modal.querySelector('#scFirebaseAuthCancel').addEventListener('click', () => modal.remove());
-      modal.querySelector('#scFirebaseAuthForm').addEventListener('submit', async event => {
-        event.preventDefault();
-        const email = modal.querySelector('#scFirebaseEmail').value.trim();
-        const password = modal.querySelector('#scFirebasePassword').value;
-        const submit = modal.querySelector('#scFirebaseAuthSubmit');
-        const errorBox = modal.querySelector('#scFirebaseAuthError');
-        submit.disabled = true; submit.textContent = 'Connecting...'; errorBox.textContent = '';
-        try {
-          const credential = await auth.signInWithEmailAndPassword(email, password);
-          if (!credential.user || credential.user.uid !== ALLOWED_ADMIN_UID) {
-            await auth.signOut();
-            throw new Error('Firebase UID মেলেনি। নির্ধারিত প্রধান Admin অ্যাকাউন্ট ব্যবহার করুন।');
-          }
-          modal.remove();
-          startSync();
-        } catch (error) {
-          errorBox.textContent = error.code ? (error.code + ': ' + error.message) : error.message;
-          submit.disabled = false; submit.textContent = 'Connect & Sync';
-        }
-      });
+    if (id === '__disabled_admin__' || disabledIds.includes(id)) {
+      event?.preventDefault();
+      alert('পুরোনো ডিফল্ট এডমিন অ্যাকাউন্টটি সরিয়ে দেওয়া হয়েছে। সুপার এডমিন আইডি ব্যবহার করুন।');
+      return false;
     }
-  }
 
-  // Observe application data writes without changing the existing application save functions.
-  const originalSetItem = Storage.prototype.setItem;
-  Storage.prototype.setItem = function (key, value) {
-    const result = originalSetItem.call(this, key, value);
-    if (this === localStorage && typeof key === 'string' && key.startsWith('soc_')) schedulePush();
-    return result;
-  };
-  const originalRemoveItem = Storage.prototype.removeItem;
-  Storage.prototype.removeItem = function (key) {
-    const result = originalRemoveItem.call(this, key);
-    if (this === localStorage && typeof key === 'string' && key.startsWith('soc_')) schedulePush();
-    return result;
-  };
-
-  // Attach to the final login handler after all existing application extensions have loaded.
-  function attachLoginHook() {
-    if (typeof window.handleLogin !== 'function' || window.handleLogin.__firebaseHooked) return false;
-    const prior = window.handleLogin;
-    const wrapped = function () {
-      const result = prior.apply(this, arguments);
-      setTimeout(() => {
-        if (isPrincipalAdmin()) {
-          if (auth && auth.currentUser && auth.currentUser.uid === ALLOWED_ADMIN_UID) startSync();
-          else showFirebaseLogin();
-        }
-      }, 250);
-      return result;
-    };
-    wrapped.__firebaseHooked = true;
-    window.handleLogin = wrapped;
-    return true;
-  }
-  function attachLogoutHook() {
-    if (typeof window.toggleAuthModal !== 'function' || window.toggleAuthModal.__firebaseHooked) return;
-    const prior = window.toggleAuthModal;
-    const wrapped = function () {
-      const result = prior.apply(this, arguments);
-      setTimeout(() => {
-        if (!isPrincipalAdmin() && auth && auth.currentUser) auth.signOut().catch(console.error);
-      }, 0);
-      return result;
-    };
-    wrapped.__firebaseHooked = true;
-    window.toggleAuthModal = wrapped;
-  }
-  function boot() {
-    initFirebase();
-    attachLoginHook(); attachLogoutHook();
-    // Several original inline scripts redefine login/logout later; retry until final handlers are attached.
-    let tries = 0;
-    const timer = setInterval(() => {
-      attachLoginHook(); attachLogoutHook();
-      if (++tries >= 30) clearInterval(timer);
-    }, 250);
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
-  else boot();
-
-  window.communityFirebaseSync = {
-    connect: showFirebaseLogin,
-    syncNow: pushLocalData,
-    getStatus: () => ({ authenticated: !!auth?.currentUser, uid: auth?.currentUser?.uid || null, ready })
+    return previousLoginHandler?.call(this, event);
   };
 })();
 </script>
+
+
+<!-- SMART COMMUNITY FIREBASE REALTIME DATABASE SYNC -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<style>
+  #firebaseSyncStatus{position:fixed;right:12px;bottom:max(12px,calc(env(safe-area-inset-bottom,0px) + 12px));z-index:10060;display:flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:rgba(15,23,42,.94);color:#fff;font:600 11px/1.2 'Hind Siliguri',sans-serif;box-shadow:0 5px 18px rgba(0,0,0,.22);backdrop-filter:blur(8px);max-width:calc(100vw - 24px);pointer-events:none}
+  #firebaseSyncStatus .sync-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;flex:none;box-shadow:0 0 0 3px rgba(251,191,36,.16)}
+  #firebaseSyncStatus[data-state="online"] .sync-dot{background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.16)}
+  #firebaseSyncStatus[data-state="error"] .sync-dot{background:#fb7185;box-shadow:0 0 0 3px rgba(251,113,133,.16)}
+  #firebaseSyncStatus[data-state="busy"] .sync-dot{background:#60a5fa;animation:scFirebasePulse 1s infinite}
+  @keyframes scFirebasePulse{50%{opacity:.35;transform:scale(.78)}}
+  @media(max-width:480px){#firebaseSyncStatus{font-size:10px;padding:6px 9px;right:8px;bottom:max(8px,calc(env(safe-area-inset-bottom,0px) + 8px))}}
+</style>
+<div id="firebaseSyncStatus" data-state="busy" aria-live="polite"><span class="sync-dot"></span><span id="firebaseSyncStatusText">Firebase সংযোগ হচ্ছে...</span></div>
+<script>
+(function(){
+  'use strict';
+  // Firebase Web App configuration supplied by the software owner.
+  // The Realtime Database URL is included because this project uses Firebase RTDB.
+  const firebaseConfig = {
+    apiKey: 'AIzaSyBREIXBPsFCwVVh9W8lF28qEJrZdz3D54',
+    authDomain: 'no-camp.firebaseapp.com',
+    databaseURL: 'https://no-camp-default-rtdb.firebaseio.com/',
+    projectId: 'no-camp',
+    storageBucket: 'no-camp.firebasestorage.app',
+    messagingSenderId: '785894817101',
+    appId: '1:785894817101:web:7c2d2e6b7457e7094c0b04'
+  };
+
+  // Operational data only. Local login credentials and account password stores
+  // are intentionally excluded; never publish passwords to a shared database.
+  const SYNC_KEYS = [
+    'soc_families_v8', 'soc_notices_v8', 'soc_committee_v8',
+    'soc_public_vis_v8', 'soc_monthly_fee_v8', 'soc_sub_payments_v8',
+    'soc_emergency_numbers_v1', 'soc_skill_public_rules_v1',
+    'soc_activity_logs_v1', 'soc_admin_profile_v1', 'soc_system_title_v1',
+    'soc_public_print_v1', 'soc_public_skill_categories_v1',
+    'soc_family_relations_v1', 'soc_print_settings_v1',
+    'soc_dark_mode_v1'
+  ];
+  const KEY_SET = new Set(SYNC_KEYS);
+  const RAW_KEYS = new Set(['soc_monthly_fee_v8','soc_system_title_v1','soc_dark_mode_v1']);
+  const statusBox = document.getElementById('firebaseSyncStatus');
+  const statusText = document.getElementById('firebaseSyncStatusText');
+  const setStatus = (state, message) => {
+    if(statusBox) statusBox.dataset.state = state;
+    if(statusText) statusText.textContent = message;
+  };
+  let dbRef = null;
+  let ready = false;
+  let applyingRemote = false;
+  let writeTimer = null;
+  let pendingWrites = new Set();
+  let lastRemoteFingerprint = '';
+  let initialSnapshotHandled = false;
+
+  const nativeSetItem = Storage.prototype.setItem;
+  const nativeRemoveItem = Storage.prototype.removeItem;
+  function decodeLocal(key, raw){
+    if(raw === null || raw === undefined) return null;
+    if(RAW_KEYS.has(key)) return String(raw);
+    try { return JSON.parse(raw); } catch (_) { return raw; }
+  }
+  function encodeLocal(key, value){
+    if(RAW_KEYS.has(key)) return String(value ?? '');
+    return typeof value === 'string' ? value : JSON.stringify(value);
+  }
+  function localValue(key){
+    const raw = nativeGetItem.call(localStorage, key);
+    return raw === null ? undefined : decodeLocal(key, raw);
+  }
+  const nativeGetItem = Storage.prototype.getItem;
+  function scheduleWrite(key){
+    if(!ready || applyingRemote || !KEY_SET.has(key)) return;
+    pendingWrites.add(key);
+    clearTimeout(writeTimer);
+    writeTimer = setTimeout(flushWrites, 450);
+  }
+  async function flushWrites(){
+    if(!ready || !dbRef || !pendingWrites.size) return;
+    const keys = Array.from(pendingWrites);
+    pendingWrites.clear();
+    const writes = keys.map(key => {
+      const value = localValue(key);
+      return dbRef.child('data').child(key).set(value === undefined ? null : value);
+    });
+    try {
+      await Promise.all(writes);
+      setStatus('online','Firebase সিংক সম্পন্ন');
+    } catch(error){
+      console.error('Firebase sync write failed:', error);
+      setStatus('error','Firebase সিংক হয়নি: অনুমতি পরীক্ষা করুন');
+      keys.forEach(key => pendingWrites.add(key));
+    }
+  }
+  function pushAllLocal(){
+    SYNC_KEYS.forEach(key => pendingWrites.add(key));
+    flushWrites();
+  }
+  function applyRemoteState(data){
+    applyingRemote = true;
+    try {
+      Object.keys(data || {}).forEach(key => {
+        if(!KEY_SET.has(key)) return;
+        const value = data[key];
+        nativeSetItem.call(localStorage, key, encodeLocal(key, value));
+      });
+      // Refresh the app's in-memory records so changes from another device appear immediately.
+      try { if(typeof families !== 'undefined' && data.soc_families_v8 !== undefined) families = data.soc_families_v8 || []; } catch(_){}
+      try { if(typeof notices !== 'undefined' && data.soc_notices_v8 !== undefined) notices = data.soc_notices_v8 || []; } catch(_){}
+      try { if(typeof committee !== 'undefined' && data.soc_committee_v8 !== undefined) committee = data.soc_committee_v8 || []; } catch(_){}
+      try { if(typeof publicVisibility !== 'undefined' && data.soc_public_vis_v8 !== undefined) publicVisibility = data.soc_public_vis_v8 || {}; } catch(_){}
+      try { if(typeof monthlyFeeRate !== 'undefined' && data.soc_monthly_fee_v8 !== undefined) monthlyFeeRate = parseInt(data.soc_monthly_fee_v8,10) || 20; } catch(_){}
+      try { if(typeof subscriptionPayments !== 'undefined' && data.soc_sub_payments_v8 !== undefined) subscriptionPayments = data.soc_sub_payments_v8 || []; } catch(_){}
+      try { if(typeof emergencyNumbers !== 'undefined' && data.soc_emergency_numbers_v1 !== undefined) emergencyNumbers = data.soc_emergency_numbers_v1 || []; } catch(_){}
+      try { if(typeof skillPublicRules !== 'undefined' && data.soc_skill_public_rules_v1 !== undefined) skillPublicRules = data.soc_skill_public_rules_v1 || {}; } catch(_){}
+      try { if(typeof activityLogs !== 'undefined' && data.soc_activity_logs_v1 !== undefined) activityLogs = data.soc_activity_logs_v1 || []; } catch(_){}
+      try { if(typeof adminProfile !== 'undefined' && data.soc_admin_profile_v1 !== undefined) adminProfile = data.soc_admin_profile_v1 || {}; } catch(_){}
+      try { if(typeof systemTitle !== 'undefined' && data.soc_system_title_v1 !== undefined) systemTitle = data.soc_system_title_v1 || 'স্মার্ট সোসাইটি হাব'; } catch(_){}
+      try { if(typeof publicPrint !== 'undefined' && data.soc_public_print_v1 !== undefined) publicPrint = data.soc_public_print_v1 || {}; } catch(_){}
+      try { if(typeof publicSkillCategories !== 'undefined' && data.soc_public_skill_categories_v1 !== undefined) publicSkillCategories = data.soc_public_skill_categories_v1 || []; } catch(_){}
+      const renderers = ['renderDashboard','renderFamilies','renderNotices','renderCommittee','renderEmergencyNumbers','renderCollectorPage','renderSkills','renderBloodDonors'];
+      renderers.forEach(name => { try { if(typeof window[name] === 'function') window[name](); } catch(err){ console.warn('UI refresh skipped:',name,err); } });
+      try { if(typeof updateUIPermissions === 'function') updateUIPermissions(); } catch(_){}
+      try { if(typeof updateIdentityBadge === 'function') updateIdentityBadge(); } catch(_){}
+      try { const fee=document.getElementById('monthlyFeeInput'); if(fee && data.soc_monthly_fee_v8 !== undefined) fee.value=data.soc_monthly_fee_v8; } catch(_){}
+      try { const title=document.getElementById('systemNameHeader'); if(title && data.soc_system_title_v1 !== undefined) title.textContent=data.soc_system_title_v1; } catch(_){}
+    } finally { applyingRemote = false; }
+  }
+  function startSync(){
+    try {
+      if(!window.firebase || !firebase.database) throw new Error('Firebase Realtime Database SDK লোড হয়নি।');
+      if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      dbRef = firebase.database().ref('smartCommunity/state');
+      setStatus('busy','Firebase সংযোগ হচ্ছে...');
+      dbRef.on('value', snapshot => {
+        const root = snapshot.val() || {};
+        const remote = root.data || {};
+        const fingerprint = JSON.stringify(remote);
+        if(initialSnapshotHandled && fingerprint === lastRemoteFingerprint){
+          setStatus('online','Firebase সংযুক্ত');
+          return;
+        }
+        initialSnapshotHandled = true;
+        lastRemoteFingerprint = fingerprint;
+        if(!Object.keys(remote).length){
+          ready = true;
+          pushAllLocal();
+          setStatus('online','Firebase সংযুক্ত; ডেটা আপলোড হচ্ছে');
+          return;
+        }
+        applyRemoteState(remote);
+        ready = true;
+        const missing = SYNC_KEYS.filter(key => !Object.prototype.hasOwnProperty.call(remote,key));
+        if(missing.length){ missing.forEach(key => pendingWrites.add(key)); flushWrites(); }
+        setStatus('online','Firebase সিংক সম্পন্ন');
+      }, error => {
+        console.error('Firebase Realtime Database listener failed:', error);
+        ready = false;
+        setStatus('error','Firebase সংযোগ/অনুমতি নেই');
+      });
+    } catch(error){
+      console.error('Firebase initialization failed:',error);
+      setStatus('error','Firebase চালু করা যায়নি');
+    }
+  }
+  Storage.prototype.setItem = function(key,value){
+    nativeSetItem.call(this,key,value);
+    if(this === localStorage && KEY_SET.has(String(key))) scheduleWrite(String(key));
+  };
+  Storage.prototype.removeItem = function(key){
+    nativeRemoveItem.call(this,key);
+    if(this === localStorage && KEY_SET.has(String(key))) scheduleWrite(String(key));
+  };
+  window.addEventListener('storage', event => {
+    if(event.key && KEY_SET.has(event.key)) scheduleWrite(event.key);
+  });
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',startSync,{once:true});
+  else startSync();
+})();
+</script>
+<!-- END SMART COMMUNITY FIREBASE REALTIME DATABASE SYNC -->
 
 </body>
 </html>
