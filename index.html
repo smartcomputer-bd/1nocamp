@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="sc-build" content="20261110-blood-skill-print-controls-v4">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>১ নং ক্যাম্প পরিচালনা কমিটি</title>
+    <title>কমিউনিটি ও সোসাইটি ম্যানেজমেন্ট সিস্টেম</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Hind Siliguri -->
@@ -242,7 +238,7 @@
                 <div class="flex items-center justify-center gap-3 py-3 text-center cursor-pointer" onclick="switchTab('dashboard')">
                     <div class="sc-home3d w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shrink-0"><i class="fa-solid fa-house-chimney-window text-3xl sm:text-4xl"></i></div>
                     <div class="min-w-0">
-                        <h1 id="systemNameHeader" class="sc-system-title font-black text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                        <h1 id="systemNameHeader" class="sc-system-title font-black text-2xl sm:text-3xl lg:text-4xl tracking-tight leading-tight">স্মার্ট সোসাইটি হাব</h1>
                         <p id="portalStatusSubtitle" class="text-[11px] text-emerald-300 font-bold mt-1">পাবলিক পোর্টাল ভিউ</p>
                     </div>
                 </div>
@@ -478,7 +474,6 @@
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
                     <input type="text" id="skillSearchInput" oninput="renderSkills()" placeholder="পেশা বা স্কিল দিয়ে খুঁজুন (যেমন: ডাক্তার, শিক্ষক, ড্রাইভার)..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <div id="skillOccupationFilters" class="w-full flex flex-wrap gap-2"></div>
                 <button type="button" data-admin-print="skill" onclick="printSkillsTable()" class="admin-print-control bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5">
                     <i class="fa-solid fa-print"></i> পেশা তালিকা প্রিন্ট (A4)
                 </button>
@@ -1721,7 +1716,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">পরিবার তথ্য ও মাসিক চাঁদা বকেয়ার বিবরণী (ঘর: ${f.houseNo})</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -1897,7 +1892,7 @@
 
             content.innerHTML = `
                 <div class="text-center border-b pb-3 space-y-1">
-                    <h2 class="font-black text-lg text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h2>
+                    <h2 class="font-black text-lg text-slate-900">স্মার্ট সোসাইটি হাব</h2>
                     <p class="text-xs font-bold text-emerald-700">মাসিক চাঁদা পরিশোধের অফিসিয়াল রশিদ</p>
                     <span class="text-[10px] text-slate-500 block">রশিদ নম্বর: <strong class="text-slate-900">${receiptObj.receiptNo}</strong></span>
                 </div>
@@ -1942,7 +1937,7 @@
             printContainer.innerHTML = `
                 <div style="max-width: 400px; margin: 0 auto; border: 2px solid #000; padding: 20px; font-size: 12px; background: #fff;">
                     <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
-                        <h2 style="font-size: 18px; font-weight: 900; margin: 0;">১ নং ক্যাম্প পরিচালনা কমিটি</h2>
+                        <h2 style="font-size: 18px; font-weight: 900; margin: 0;">স্মার্ট সোসাইটি হাব</h2>
                         <h3 style="font-size: 13px; font-weight: bold; margin: 3px 0; color: #15803d;">মাসিক চাঁদা আদায়ের রশিদ</h3>
                         <p style="font-size: 10px; margin: 0;">রশিদ নং: <strong>${r.receiptNo}</strong></p>
                     </div>
@@ -2056,7 +2051,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">মাসিক চাঁদা ব্যবস্থাপনা - বকেয়া চাঁদা থাকা পরিবারের তালিকা</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -2290,7 +2285,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">মাসিক চাঁদা ব্যবস্থাপনা - তারিখ অনুযায়ী পরিশোধিত চাঁদার বিবরণী</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">ফিল্টারকৃত তারিখ: ${fromDateVal} হতে ${toDateVal} &nbsp;|&nbsp; প্রিন্ট তারিখ: ${dateStr} (${timeStr})</p>
                 </div>
@@ -2348,7 +2343,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">পরিবার ব্যবস্থাপনা - সকল পরিবারের বিস্তারিত ডাটা বিবরণী</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -2391,7 +2386,7 @@
                 `কর্তার লিঙ্গ: ${f.headGender}\n` +
                 `মোবাইল নম্বর: ${f.headMobile}\n` +
                 `\n👨‍👩‍👧‍👦 *পরিবারের সদস্যবৃন্দ:* ${membersSummary}\n\n` +
-                `১ নং ক্যাম্প পরিচালনা কমিটি সফটওয়্যার হতে প্রেরিত।`;
+                `স্মার্ট সোসাইটি হাব সফটওয়্যার হতে প্রেরিত।`;
 
             if (navigator.share) {
                 navigator.share({
@@ -2672,7 +2667,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">${escapeHtml(systemTitle || '১ নং ক্যাম্প পরিচালনা কমিটি')}</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">রক্তদান ব্যবস্থাপনা - রক্তদাতা সদস্যবৃন্দের তালিকা (${groupTitle})</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -2708,59 +2703,134 @@
         }
 
         // SKILLS & OCCUPATION DIRECTORY
-        let selectedSkillOccupations = [];
-        function toggleSkillOccupation(encoded) {
-            const occupation=decodeURIComponent(encoded), i=selectedSkillOccupations.indexOf(occupation);
-            if(i>=0)selectedSkillOccupations.splice(i,1);else selectedSkillOccupations.push(occupation);
-            renderSkills();
-        }
-        function clearSkillOccupationFilter(){selectedSkillOccupations=[];renderSkills();}
-        function getAllSkillPeople(){
-            const people=[];
-            (families||[]).forEach(f=>{
-                if(f.headOccupation)people.push({name:f.headName,occupation:f.headOccupation,mobile:f.headMobile,houseNo:f.houseNo,photo:f.headPhoto,gender:f.headGender,relation:'পরিবার প্রধান (কর্তা)'});
-                (f.members||[]).forEach(m=>{if(m.occupation)people.push({name:m.name,occupation:m.occupation,mobile:f.headMobile,houseNo:f.houseNo,photo:'',gender:m.gender,relation:m.relation||'সদস্য'});});
+        function renderSkills() {
+            const grid = document.getElementById('skillsGrid');
+            const search = document.getElementById('skillSearchInput').value.toLowerCase();
+            const allSkilled = [];
+
+            families.forEach(f => {
+                if (f.headOccupation) {
+                    allSkilled.push({
+                        name: f.headName,
+                        occupation: f.headOccupation,
+                        mobile: f.headMobile,
+                        houseNo: f.houseNo,
+                        photo: f.headPhoto,
+                        gender: f.headGender,
+                        relation: 'পরিবার প্রধান (কর্তা)'
+                    });
+                }
+                if (f.members) {
+                    f.members.forEach(m => {
+                        if (m.occupation) {
+                            allSkilled.push({
+                                name: m.name,
+                                occupation: m.occupation,
+                                mobile: f.headMobile,
+                                houseNo: f.houseNo,
+                                photo: '',
+                                gender: m.gender,
+                                relation: m.relation
+                            });
+                        }
+                    });
+                }
             });
-            return people;
-        }
-        function getVisibleSkillOccupations(person,mode='view'){
-            return String(person.occupation||'').split(',').map(x=>x.trim()).filter(Boolean).filter(occ=>{
-                if(!currentUser&&Array.isArray(publicSkillCategories)&&!publicSkillCategories.includes(occ))return false;
-                if(!currentUser&&skillPublicRules[skillRuleKey({...person,occupation:occ})]?.[mode]===false)return false;
-                return true;
-            });
-        }
-        function renderSkillOccupationFilterChips(people){
-            const root=document.getElementById('skillOccupationFilters');if(!root)return;
-            const cats=[...new Set(people.flatMap(p=>getVisibleSkillOccupations(p,'view')))].sort((a,b)=>a.localeCompare(b,'bn'));
-            selectedSkillOccupations=selectedSkillOccupations.filter(x=>cats.includes(x));
-            root.innerHTML=cats.map(occ=>`<button type="button" onclick="toggleSkillOccupation('${encodeURIComponent(occ)}')" class="px-3 py-1.5 rounded-full text-xs font-bold border ${selectedSkillOccupations.includes(occ)?'bg-emerald-600 text-white border-emerald-600':'bg-white text-slate-700 border-slate-200'}">${escapeHtml(occ)}</button>`).join('')+(selectedSkillOccupations.length?`<button type="button" onclick="clearSkillOccupationFilter()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">সব ফিল্টার মুছুন</button>`:'');
-        }
-        function renderSkills(){
-            const grid=document.getElementById('skillsGrid');if(!grid)return;
-            const search=(document.getElementById('skillSearchInput')?.value||'').trim().toLowerCase();
-            const all=getAllSkillPeople();renderSkillOccupationFilterChips(all);
-            const filtered=all.map(p=>{const visible=getVisibleSkillOccupations(p,'view');const selected=selectedSkillOccupations.length?visible.filter(o=>selectedSkillOccupations.includes(o)):visible;return {...p,visibleOccupations:selected};})
-                .filter(p=>p.visibleOccupations.length&&(!search||String(p.name||'').toLowerCase().includes(search)||p.visibleOccupations.some(o=>o.toLowerCase().includes(search))));
-            grid.innerHTML=filtered.map(p=>{
-                const avatar=!currentUser?(p.gender==='নারী'?'<div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl font-bold border border-pink-200"><i class="fa-solid fa-venus"></i></div>':'<div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold border border-emerald-200"><i class="fa-solid fa-mars"></i></div>'):`<img src="${p.photo||'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'}" class="w-12 h-12 rounded-xl object-cover border border-slate-200">`;
-                const nm=escapeHtml(p.name), house=escapeHtml(p.houseNo), rel=escapeHtml(p.relation), mobile=String(p.mobile||'');
-                const shareName=encodeURIComponent(String(p.name||''));
-                const shareOcc=encodeURIComponent(String(p.visibleOccupations.join(', ')));
-                const shareMobile=encodeURIComponent(mobile);
-                return `<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 flex flex-col justify-between"><div class="space-y-3"><div class="flex items-center space-x-3 space-x-reverse">${avatar}<div><h4 class="font-bold text-sm text-slate-900">${nm}</h4><p class="text-[11px] text-slate-500 font-semibold">ঘর: ${house} (${rel})</p></div></div><div class="flex flex-wrap gap-1">${p.visibleOccupations.map(o=>`<span class="bg-emerald-50 text-emerald-900 border border-emerald-100 text-xs font-bold px-2 py-0.5 rounded-lg"><i class="fa-solid fa-briefcase text-emerald-600 mr-1"></i> ${escapeHtml(o)}</span>`).join('')}</div></div><div class="pt-2 border-t border-slate-100 flex flex-col gap-2"><div class="flex items-center gap-1 text-xs font-bold"><a href="tel:${encodeURIComponent(mobile)}" class="flex-1 py-1.5 bg-slate-900 text-white rounded-lg text-center"><i class="fa-solid fa-phone text-emerald-400"></i> কল</a><a href="https://wa.me/88${encodeURIComponent(mobile)}" target="_blank" rel="noopener" class="flex-1 py-1.5 bg-emerald-600 text-white rounded-lg text-center"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ</a></div><button onclick="shareData('${shareName}','পেশা: ${shareOcc}','মোবাইল: ${shareMobile}')" class="text-xs text-slate-500 hover:text-slate-800 text-center"><i class="fa-solid fa-share-nodes"></i> শেয়ার করুন</button></div></div>`;
-            }).join('')||'<div class="col-span-full text-center text-slate-400 bg-white rounded-xl p-8">নির্বাচিত পেশায় কোনো সদস্য পাওয়া যায়নি।</div>';
+
+            const filtered = allSkilled.filter(s => s.occupation.toLowerCase().includes(search) || s.name.toLowerCase().includes(search));
+
+            grid.innerHTML = filtered.map(s => {
+                const visibleOccupations = s.occupation.split(',').map(x=>x.trim()).filter(x=>currentUser || skillPublicRules[skillRuleKey({...s,occupation:x})]?.view !== false);
+                if(!visibleOccupations.length) return '';
+                let avatarHTML = '';
+                if (!currentUser) {
+                    avatarHTML = s.gender === 'নারী'
+                        ? `<div class="w-12 h-12 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-xl font-bold border border-pink-200"><i class="fa-solid fa-venus"></i></div>`
+                        : `<div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold border border-emerald-200"><i class="fa-solid fa-mars"></i></div>`;
+                } else {
+                    avatarHTML = `<img src="${s.photo || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'}" class="w-12 h-12 rounded-xl object-cover border border-slate-200">`;
+                }
+
+                return `
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                ${avatarHTML}
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">${s.name}</h4>
+                                    <p class="text-[11px] text-slate-500 font-semibold">ঘর: ${s.houseNo} (${s.relation})</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-1">
+                                ${visibleOccupations.map(occ => `<span class="bg-emerald-50 text-emerald-900 border border-emerald-100 text-xs font-bold px-2 py-0.5 rounded-lg"><i class="fa-solid fa-briefcase text-emerald-600 mr-1"></i> ${occ}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex flex-col gap-2">
+                            <div class="flex items-center gap-1 text-xs font-bold">
+                                <a href="tel:${s.mobile}" class="flex-1 py-1.5 bg-slate-900 text-white rounded-lg text-center"><i class="fa-solid fa-phone text-emerald-400"></i> কল</a>
+                                <a href="https://wa.me/88${s.mobile}" target="_blank" class="flex-1 py-1.5 bg-emerald-600 text-white rounded-lg text-center"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ</a>
+                            </div>
+                            <button onclick="shareData('${s.name}', 'পেশা: ${s.occupation}', 'মোবাইল: ${s.mobile}')" class="text-xs text-slate-500 hover:text-slate-800 text-center"><i class="fa-solid fa-share-nodes"></i> শেয়ার করুন</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        function printSkillsTable(){
-            if(!currentUser){showToast('পাবলিক পোর্টালে প্রিন্ট করার অনুমতি নেই');return;}
-            const box=document.getElementById('printAreaTable'),{dateStr,timeStr}=getFormattedEngDateTime();
-            const search=(document.getElementById('skillSearchInput')?.value||'').trim().toLowerCase();
-            const people=getAllSkillPeople().map(p=>{const visible=getVisibleSkillOccupations(p,'print');const chosen=selectedSkillOccupations.length?visible.filter(o=>selectedSkillOccupations.includes(o)):visible;const matches=chosen.filter(o=>!search||o.toLowerCase().includes(search)||String(p.name||'').toLowerCase().includes(search));return {...p,printOccupations:matches};}).filter(p=>p.printOccupations.length);
-            if(!people.length){showToast('নির্বাচিত পেশা/স্কিলের কোনো তথ্য প্রিন্টের জন্য পাওয়া যায়নি');return;}
-            const safe=v=>escapeHtml(v??''),label=selectedSkillOccupations.length?selectedSkillOccupations.join(', '):(search||'সকল পেশা ও স্কিল');
-            box.innerHTML=`<div class="text-center mb-4 pb-2 border-b-2 border-slate-800"><h1 class="text-xl font-black uppercase tracking-tight text-slate-900">${safe(systemTitle||'১ নং ক্যাম্প পরিচালনা কমিটি')}</h1><h2 class="text-sm font-bold text-slate-700 mt-0.5">পেশা ও স্কিল ব্যবস্থাপনা - পেশাজীবী সদস্যদের তালিকা</h2><p class="text-xs font-bold mt-1">নির্বাচিত পেশা: ${safe(label)}</p><p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${safe(dateStr)} &nbsp;|&nbsp; সময়: ${safe(timeStr)}</p></div><table class="w-full border-collapse border border-slate-400 text-xs text-left"><thead><tr class="bg-slate-200 text-slate-900 font-bold"><th class="border border-slate-400 p-2 text-center">ক্রমিক</th><th class="border border-slate-400 p-2">সদস্যের নাম</th><th class="border border-slate-400 p-2">নির্বাচিত পেশা / স্কিল</th><th class="border border-slate-400 p-2 text-center">ঘর নম্বর</th><th class="border border-slate-400 p-2 text-center">কর্তার সাথে সম্পর্ক</th><th class="border border-slate-400 p-2 text-center">মোবাইল নম্বর</th></tr></thead><tbody>${people.map((p,i)=>`<tr class="border-b border-slate-300"><td class="border border-slate-400 p-2 text-center font-bold">${i+1}</td><td class="border border-slate-400 p-2 font-bold">${safe(p.name)}</td><td class="border border-slate-400 p-2 font-semibold">${safe(p.printOccupations.join(', '))}</td><td class="border border-slate-400 p-2 text-center">${safe(p.houseNo)}</td><td class="border border-slate-400 p-2 text-center">${safe(p.relation)}</td><td class="border border-slate-400 p-2 text-center">${safe(p.mobile)}</td></tr>`).join('')}</tbody></table><div class="mt-4 text-center text-[10px] text-slate-500 border-t pt-2">মোট পেশাজীবী: ${people.length} জন</div>`;
-            window.print();addActivityLog('পেশাজীবী তালিকা প্রিন্ট',label+' · '+people.length+' জন');
+        function printSkillsTable() {
+            const printContainer = document.getElementById('printAreaTable');
+            const { dateStr, timeStr } = getFormattedEngDateTime();
+            
+            const allSkilled = [];
+            families.forEach(f => {
+                if (f.headOccupation) {
+                    allSkilled.push({ name: f.headName, occupation: f.headOccupation, houseNo: f.houseNo, relation: 'কর্তা', mobile: f.headMobile });
+                }
+                if (f.members) {
+                    f.members.forEach(m => {
+                        if (m.occupation) {
+                            allSkilled.push({ name: m.name, occupation: m.occupation, houseNo: f.houseNo, relation: m.relation, mobile: f.headMobile });
+                        }
+                    });
+                }
+            });
+
+            printContainer.innerHTML = `
+                <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
+                    <h2 class="text-sm font-bold text-slate-700 mt-0.5">পেশা ও স্কিল ব্যবস্থাপনা - পেশাজীবী সদস্যদের তালিকা</h2>
+                    <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
+                </div>
+                <table class="w-full border-collapse border border-slate-400 text-xs text-left">
+                    <thead>
+                        <tr class="bg-slate-200 text-slate-900 font-bold">
+                            <th class="border border-slate-400 p-2 text-center">ক্রমিক</th>
+                            <th class="border border-slate-400 p-2">সদস্যের নাম</th>
+                            <th class="border border-slate-400 p-2">পেশা / স্কিলসমূহ</th>
+                            <th class="border border-slate-400 p-2 text-center">ঘর নম্বর</th>
+                            <th class="border border-slate-400 p-2 text-center">কর্তার সাথে সম্পর্ক</th>
+                            <th class="border border-slate-400 p-2 text-center">মোবাইল নম্বর</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${allSkilled.map((s, i) => `
+                            <tr class="border-b border-slate-300">
+                                <td class="border border-slate-400 p-2 text-center font-bold">${i+1}</td>
+                                <td class="border border-slate-400 p-2 font-bold text-slate-900">${s.name}</td>
+                                <td class="border border-slate-400 p-2 font-semibold text-emerald-800">${s.occupation}</td>
+                                <td class="border border-slate-400 p-2 text-center font-bold">${s.houseNo}</td>
+                                <td class="border border-slate-400 p-2 text-center font-medium">${s.relation}</td>
+                                <td class="border border-slate-400 p-2 text-center font-semibold">${s.mobile}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="mt-4 text-center text-[10px] text-slate-500 border-t pt-2">
+                    <p>এই পেশা ও স্কিল ব্যবস্থাপনা সফটওয়্যার দ্বারা জেনারেট করা হয়েছে।</p>
+                </div>
+            `;
+            window.print();
         }
 
         // NOTICE BOARD MANAGEMENT
@@ -2884,7 +2954,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">নোটিশ বোর্ড ব্যবস্থাপনা - প্রকাশিত নোটিশের তালিকা</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -2960,7 +3030,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">পরিচালনা কমিটি ব্যবস্থাপনা - কার্যনির্বাহী প্যানেল তালিকা</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">তারিখ: ${dateStr} &nbsp;|&nbsp; সময়: ${timeStr}</p>
                 </div>
@@ -3169,7 +3239,7 @@
 
             printContainer.innerHTML = `
                 <div class="text-center mb-4 pb-2 border-b-2 border-slate-800">
-                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">১ নং ক্যাম্প পরিচালনা কমিটি</h1>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-slate-900">স্মার্ট সোসাইটি হাব</h1>
                     <h2 class="text-sm font-bold text-slate-700 mt-0.5">আদায়কারী ব্যবস্থাপনা - চাঁদা আদায়ের বিস্তারিত বিবরণী</h2>
                     <p class="text-[11px] text-slate-600 font-semibold mt-1">সময়সীমা: ${fromDateVal} হতে ${toDateVal} &nbsp;|&nbsp; প্রিন্ট তারিখ: ${dateStr} (${timeStr})</p>
                 </div>
@@ -3281,7 +3351,7 @@
         const ACTION_BN = {view:'ভিউ',add:'যোগ',edit:'এডিট',delete:'ডিলিট',print:'প্রিন্ট'};
         let activityLogs = JSON.parse(localStorage.getItem('soc_activity_logs_v1') || '[]');
         let adminProfile = JSON.parse(localStorage.getItem('soc_admin_profile_v1') || '{}');
-        let systemTitle = localStorage.getItem('soc_system_title_v1') || '১ নং ক্যাম্প পরিচালনা কমিটি';
+        let systemTitle = localStorage.getItem('soc_system_title_v1') || 'স্মার্ট সোসাইটি হাব';
         let adminCredentials = JSON.parse(localStorage.getItem('soc_admin_credentials_v1') || 'null') || {id:'__disabled_admin__',pass:'__disabled__'};
         let publicPrint = JSON.parse(localStorage.getItem('soc_public_print_v1') || '{}');
         if(publicPrint.emergency===undefined)publicPrint.emergency=true;
@@ -3289,21 +3359,6 @@
         let emergencyNumbers = JSON.parse(localStorage.getItem('soc_emergency_numbers_v1') || '[]');
         let editingEmergencyId = null;
         let skillPublicRules = JSON.parse(localStorage.getItem('soc_skill_public_rules_v1') || '{}');
-        // Firebase Realtime Database forbids '.', '#', '$', '/', '[' and ']' in object keys.
-        // Older records used raw house/name/occupation strings, so migrate those keys safely.
-        (function migrateSkillRuleKeysForFirebase(){
-            const safeRules = {};
-            Object.entries(skillPublicRules || {}).forEach(([key, value]) => {
-                const hiddenPrefix = '__public_category_hidden__';
-                const safeKey = key.startsWith(hiddenPrefix)
-                    ? hiddenPrefix + encodeURIComponent(key.slice(hiddenPrefix.length))
-                    : (/[.#$\/\[\]]/.test(key) ? encodeURIComponent(key) : key);
-                safeRules[safeKey] = safeRules[safeKey] && typeof safeRules[safeKey] === 'object'
-                    ? Object.assign(safeRules[safeKey], value || {}) : (value || {});
-            });
-            skillPublicRules = safeRules;
-            try { localStorage.setItem('soc_skill_public_rules_v1', JSON.stringify(skillPublicRules)); } catch (_) {}
-        })();
 
         function defaultPermissions() {
             const p={};
@@ -3382,12 +3437,11 @@
             showToast('ইউজার তথ্য এডিট করুন এবং সংরক্ষণ করুন');
         }
         async function deleteUserRole(i){if(!users[i])return;if(await window.showDynamicConfirm(`'${users[i].name}' ইউজারটি ডিলিট করবেন?`)){let id=users[i].id;users.splice(i,1);saveData();renderUsersList();addActivityLog('ইউজার ডিলিট',id);showToast('ইউজার ডিলিট হয়েছে');}}
-        function refreshCommunityTitleUI(){const title=String(systemTitle||'১ নং ক্যাম্প পরিচালনা কমিটি');const h=document.getElementById('systemNameHeader');if(h)h.textContent=title;document.title=title;const f=document.querySelector('footer p.font-bold');if(f)f.textContent='© ২০২৬ '+title+'। সর্বস্বত্ব সংরক্ষিত।';const i=document.getElementById('systemNameInput');if(i&&document.activeElement!==i)i.value=title;}
-        function saveSystemTitleOnly(){systemTitle=document.getElementById('systemNameInput').value.trim()||systemTitle;localStorage.setItem('soc_system_title_v1',systemTitle);refreshCommunityTitleUI();window.dispatchEvent(new Event('sc:local-data-saved'));addActivityLog('সফটওয়্যার নাম পরিবর্তন',systemTitle);showToast('সফটওয়্যারের নাম সংরক্ষণ হয়েছে এবং Firebase Sync-এ পাঠানো হয়েছে');}
-        function skillRuleKey(s){return encodeURIComponent([s.houseNo,s.name,s.occupation].join('::'));}
+        function saveSystemTitleOnly(){systemTitle=document.getElementById('systemNameInput').value.trim()||systemTitle;localStorage.setItem('soc_system_title_v1',systemTitle);document.getElementById('systemNameHeader').innerText=systemTitle;document.title=systemTitle;const f=document.querySelector('footer p.font-bold');if(f)f.innerText='© ২০২৬ '+systemTitle+'। সর্বস্বত্ব সংরক্ষিত।';addActivityLog('সফটওয়্যার নাম পরিবর্তন',systemTitle);showToast('সফটওয়্যারের নাম সংরক্ষণ হয়েছে');}
+        function skillRuleKey(s){return [s.houseNo,s.name,s.occupation].join('::');}
         function collectAllSkills(){const a=[];families.forEach(f=>{if(f.headOccupation)f.headOccupation.split(',').map(x=>x.trim()).filter(Boolean).forEach(occupation=>a.push({name:f.headName,occupation,houseNo:f.houseNo,relation:'পরিবার প্রধান'}));(f.members||[]).forEach(m=>{if(m.occupation)m.occupation.split(',').map(x=>x.trim()).filter(Boolean).forEach(occupation=>a.push({name:m.name,occupation,houseNo:f.houseNo,relation:m.relation}));});});return a;}
         function renderSkillPublicPermissions(){const root=document.getElementById('skillPublicPermissions');if(!root)return;const all=collectAllSkills();root.innerHTML=all.map(s=>{const k=skillRuleKey(s),r=skillPublicRules[k]||{};return `<div class="border rounded-xl p-2 bg-slate-50"><div class="font-bold text-xs">${escapeHtml(s.name)} <span class="text-slate-500">· ঘর ${escapeHtml(s.houseNo)}</span></div><div class="text-[11px] text-emerald-700 mb-2">${escapeHtml(s.occupation)}</div><div class="flex flex-wrap gap-4 text-xs"><label class="flex gap-1 items-center"><input type="checkbox" ${r.view!==false?'checked':''} onchange="setSkillPublicRule('${encodeURIComponent(k)}','view',this.checked)"> পাবলিক ভিউ</label><label class="flex gap-1 items-center"><input type="checkbox" ${r.print!==false?'checked':''} onchange="setSkillPublicRule('${encodeURIComponent(k)}','print',this.checked)"> পাবলিক প্রিন্ট</label></div></div>`;}).join('')||'<p class="text-xs text-slate-400">এখনো কোনো পেশা/স্কিলের তথ্য নেই। পরিবারে পেশা যুক্ত করলে এখানে তালিকা আসবে।</p>';}
-        function setSkillPublicRule(encoded,action,value){const k=decodeURIComponent(encoded);skillPublicRules[k]=skillPublicRules[k]||{view:true,print:true};skillPublicRules[k][action]=value;localStorage.setItem('soc_skill_public_rules_v1',JSON.stringify(skillPublicRules));window.dispatchEvent(new Event('sc:local-data-saved'));renderSkills();addActivityLog('পেশা/স্কিল অনুমতি',action+' '+(value?'অনুমোদিত':'বন্ধ'));}
+        function setSkillPublicRule(encoded,action,value){const k=decodeURIComponent(encoded);skillPublicRules[k]=skillPublicRules[k]||{view:true,print:true};skillPublicRules[k][action]=value;localStorage.setItem('soc_skill_public_rules_v1',JSON.stringify(skillPublicRules));renderSkills();addActivityLog('পেশা/স্কিল অনুমতি',action+' '+(value?'অনুমোদিত':'বন্ধ'));}
         function openEmergencyModal(id=null){editingEmergencyId=id;const item=id?emergencyNumbers.find(x=>x.id===id):null;const cats=[...new Set(emergencyNumbers.map(x=>x.category).filter(Boolean))];showDynamicDetail(item?'জরুরী নম্বর এডিট':'নতুন জরুরী নম্বর যুক্ত',`<form id="emergencyEntryForm" class="space-y-3" onsubmit="saveEmergencyNumber(event)"><div><label class="text-xs font-bold">ক্যাটাগরি *</label><input id="emergencyCategory" list="emergencyCategoryOptions" required value="${escapeHtml(item?.category||'')}" placeholder="ক্যাটাগরি লিখুন বা নির্বাচন করুন" class="w-full border rounded-xl p-2 text-sm"><datalist id="emergencyCategoryOptions">${cats.map(c=>`<option value="${escapeHtml(c)}">`).join('')}</datalist></div><div><label class="text-xs font-bold">জরুরী নম্বরের নাম *</label><input id="emergencyName" required value="${escapeHtml(item?.name||'')}" class="w-full border rounded-xl p-2 text-sm" placeholder="যেমন: ফায়ার সার্ভিস"></div><div><label class="text-xs font-bold">মোবাইল নম্বর *</label><input id="emergencyMobile" required type="tel" value="${escapeHtml(item?.mobile||'')}" class="w-full border rounded-xl p-2 text-sm" placeholder="মোবাইল/হটলাইন নম্বর"></div><div><label class="text-xs font-bold">ছবি</label><input id="emergencyImageFile" type="file" accept="image/*" class="w-full text-xs" onchange="readEmergencyImage(event)"><input type="hidden" id="emergencyImage" value="${item?.image||''}"><img id="emergencyImagePreview" src="${item?.image||''}" class="${item?.image?'':'hidden'} mt-2 h-20 w-20 object-cover rounded-xl border"></div><button class="w-full bg-emerald-600 text-white rounded-xl py-2.5 text-sm font-bold"><i class="fa fa-save mr-1"></i> সংরক্ষণ</button></form>`);}
         function readEmergencyImage(e){const f=e.target.files?.[0];if(!f)return;if(f.size>3*1024*1024){alert('ছবির আকার ৩ MB-এর মধ্যে দিন');e.target.value='';return;}const r=new FileReader();r.onload=()=>{document.getElementById('emergencyImage').value=r.result;const p=document.getElementById('emergencyImagePreview');p.src=r.result;p.classList.remove('hidden');};r.readAsDataURL(f);}
         function saveEmergencyNumber(e){e.preventDefault();const item={id:editingEmergencyId||('emg_'+Date.now()),category:document.getElementById('emergencyCategory').value.trim(),name:document.getElementById('emergencyName').value.trim(),mobile:document.getElementById('emergencyMobile').value.trim(),image:document.getElementById('emergencyImage').value};if(!item.category||!item.name||!item.mobile)return alert('সব আবশ্যক তথ্য পূরণ করুন');if(editingEmergencyId){const i=emergencyNumbers.findIndex(x=>x.id===editingEmergencyId);if(i>=0)emergencyNumbers[i]=item;}else emergencyNumbers.push(item);saveData();renderEmergencyNumbers();closeDynamicDetailModal();addActivityLog('জরুরী নম্বর সংরক্ষণ',item.name);showToast('জরুরী নম্বর সংরক্ষণ হয়েছে');}
@@ -3408,8 +3462,7 @@
             localStorage.setItem('soc_admin_credentials_v1',JSON.stringify(adminCredentials));
             localStorage.setItem('soc_admin_profile_v1',JSON.stringify(adminProfile));
             localStorage.setItem('soc_system_title_v1',systemTitle);
-            window.dispatchEvent(new Event('sc:local-data-saved'));
-            refreshCommunityTitleUI();
+            document.getElementById('systemNameHeader').innerText=systemTitle;document.title=systemTitle;
             const footerTitle=document.querySelector('footer p.font-bold');if(footerTitle)footerTitle.innerText='© ২০২৬ '+systemTitle+'। সর্বস্বত্ব সংরক্ষিত।';
             if(currentUser?.isAdmin){currentUser.id=adminCredentials.id;currentUser.name=adminProfile.name;currentUser.role=adminProfile.designation;document.getElementById('headerUserName').innerText=currentUser.name;document.getElementById('headerUserRole').innerText=currentUser.role;}
             addActivityLog('এডমিন সেটিংস','প্রোফাইল/সফটওয়্যার নাম আপডেট');showToast('এডমিন প্রোফাইল ও সফটওয়্যার নাম সংরক্ষিত হয়েছে');
@@ -3515,12 +3568,12 @@
                 currentUser={id:u.id,name:u.name,role:u.designation,photo:u.photo,signature:u.signature,permissions:normalizePermissions(u)};
                 document.getElementById('authModal').classList.add('hidden');showToast(`স্বাগতম ${u.name}`);
             }
-            document.body.classList.add('authenticated-ui');document.querySelectorAll('.admin-print-control').forEach(b=>b.style.display='inline-flex');updateUIPermissions();renderBloodDonors();renderSkills();renderFamilies();addActivityLog('লগইন','সফল লগইন');
+            updateUIPermissions();renderBloodDonors();renderSkills();renderFamilies();addActivityLog('লগইন','সফল লগইন');
         };
         // Keep admin profile editable only by administrator; admin retains unrestricted access.
         toggleAuthModal=function(){
             if(currentUser){
-                addActivityLog('লগআউট','সফলভাবে লগআউট');currentUser=null;document.body.classList.remove('authenticated-ui');document.querySelectorAll('.admin-print-control').forEach(b=>b.style.display='none');
+                addActivityLog('লগআউট','সফলভাবে লগআউট');currentUser=null;
                 showToast('সফলভাবে লগআউট হয়েছেন। এখন পাবলিক পোর্টাল সক্রিয়।');
                 updateUIPermissions();renderBloodDonors();renderSkills();renderFamilies();
             } else document.getElementById('authModal').classList.remove('hidden');
@@ -3658,9 +3711,7 @@
         const _managedPrintFamily=printSingleFamilyAndDueReport;
         printSingleFamilyAndDueReport=function(i){if(!currentUser?.isAdmin){showToast('পরিবারের তথ্য প্রিন্ট করার অনুমতি নেই');return;}return _managedPrintFamily(i);};
         // Do not expose print controls in the public portal, including controls rendered later.
-        const publicPrintStyle=document.createElement('style');
-        publicPrintStyle.textContent='.admin-print-control{display:none!important}body.authenticated-ui .admin-print-control{display:inline-flex!important}body:not(.authenticated-ui) .admin-print-control{display:none!important}';
-        document.head.appendChild(publicPrintStyle);
+        const publicPrintStyle=document.createElement('style');publicPrintStyle.textContent='body:not(.authenticated-ui) button[onclick*="print"],body:not(.authenticated-ui) button[onclick*="Print"],body:not(.authenticated-ui) .print-btn{display:none!important}';document.head.appendChild(publicPrintStyle);
         window.addEventListener('DOMContentLoaded',()=>{
             buildUsersAndPublicPage();
             initExtendedSettings();renderUsersList();renderManagedPublicSettings();renderSkills();
@@ -3676,7 +3727,6 @@
 (function(){
  const STORE='soc_print_settings_v1', DARK='soc_dark_mode_v1';
  let printCfg=JSON.parse(localStorage.getItem(STORE)||'{"format":"A4","width":80,"length":200}');
- window.__scHydratePrintSettings=function(data){if(data&&data[STORE]){printCfg=data[STORE];const f=document.getElementById('printFormatSelect'),w=document.getElementById('posPaperWidth'),l=document.getElementById('posPaperLength');if(f)f.value=printCfg.format||'A4';if(w)w.value=printCfg.width||80;if(l)l.value=printCfg.length||200;try{togglePosWidth();}catch(_){}}if(data&&data[DARK]!==undefined){try{setCommunityDarkMode(data[DARK]==='1',false);}catch(_){}}};
  if(!printCfg||!printCfg.format)printCfg={format:'A4',width:80};
  const PAGE_LABELS={dashboard:'ড্যাশবোর্ড',family:'পরিবার ব্যবস্থাপনা',subscription:'মাসিক চাঁদা ব্যবস্থাপনা',blood:'রক্তদান',skill:'পেশা ও স্কিল',emergency:'জরুরী নম্বর',notice:'নোটিশ',committee:'কমিটি',collector:'আদায়কারী'};
  Object.assign(APP_PAGES,{settings:'সেটিং'});
@@ -3753,7 +3803,6 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
   try{(users||[]).forEach(u=>{if(!extraAccounts.some(a=>a.id===u.id))extraAccounts.push({...u,accountType:u.accountType||'User'});});}catch(_){}
   let roleThemes=read(THEMES,{superAdmin:'#dc2626',admin:'#d4a017',user:'#7c3aed',public:'#2563eb'});
   let editingAccount=-1;
-  window.__scHydrateSuperAdminState=function(data){if(!data)return;if(data[STORE])superProfile=data[STORE];if(data[ADMINS])extraAccounts=data[ADMINS];if(data[THEMES])roleThemes=data[THEMES];try{populateSuperProfile();renderSuperAccounts();applyRoleTheme();updateIdentityBadge();}catch(e){console.warn('Super Admin UI refresh:',e);}};
 
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const pageNames={dashboard:'ড্যাশবোর্ড',family:'পরিবার ব্যবস্থাপনা',subscription:'মাসিক চাঁদা ব্যবস্থাপনা',blood:'রক্তদান',skill:'পেশা ও স্কিল',emergency:'জরুরী নম্বর',notice:'নোটিশ',committee:'কমিটি',collector:'আদায়কারী',logs:'লগ',rbac:'এডমিন',users:'ইউজার',settings:'সেটিং'};
@@ -5221,7 +5270,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     const area=document.getElementById('printAreaTable');
     if(!area){alert('প্রিন্ট এরিয়া পাওয়া যায়নি');return;}
     area.innerHTML=`<div class="due-print-report">
-      <header><h1>১ নং ক্যাম্প পরিচালনা কমিটি</h1><h2>মাসিক চাঁদা — বকেয়া পরিবারের বিস্তারিত হিসাব</h2><p>তারিখ: ${esc(dt.dateStr)} | সময়: ${esc(dt.timeStr)}</p></header>
+      <header><h1>স্মার্ট সোসাইটি হাব</h1><h2>মাসিক চাঁদা — বকেয়া পরিবারের বিস্তারিত হিসাব</h2><p>তারিখ: ${esc(dt.dateStr)} | সময়: ${esc(dt.timeStr)}</p></header>
       <table><thead><tr><th>ক্রমিক</th><th>ঘর নং</th><th>কর্তার নাম</th><th>মোবাইল</th><th>পেশা</th><th>বকেয়া মাস ও মাসিক হিসাব</th><th>মোট মাস</th><th>সর্বমোট বকেয়া</th></tr></thead>
       <tbody>${rows||'<tr><td colspan="8">কোনো বকেয়া পরিবার নেই</td></tr>'}</tbody>
       <tfoot><tr><th colspan="7">সর্বমোট বকেয়া</th><th class="money">${total} টাকা</th></tr></tfoot></table>
@@ -5991,15 +6040,12 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     messagingSenderId: '785894817101',
     appId: '1:785894817101:web:7c2d2e6b7457e7094c0b04'
   };
-  // Every persistent application key is synchronized, including account/profile/settings keys.
   const SYNC_KEYS = [
     'soc_families_v8','soc_notices_v8','soc_committee_v8','soc_public_vis_v8',
     'soc_users_v8','soc_monthly_fee_v8','soc_sub_payments_v8','soc_emergency_numbers_v1',
     'soc_skill_public_rules_v1','soc_activity_logs_v1','soc_admin_profile_v1',
-    'soc_admin_credentials_v1','soc_admin_id_history_v1','soc_system_title_v1',
-    'soc_public_print_v1','soc_public_skill_categories_v1','soc_family_relations_v1',
-    'soc_print_settings_v1','soc_dark_mode_v1','soc_super_admin_v1',
-    'soc_super_admin_accounts_v1','soc_role_themes_v1','soc_disabled_primary_admin_ids_v1'
+    'soc_system_title_v1','soc_public_print_v1','soc_public_skill_categories_v1',
+    'soc_family_relations_v1','soc_print_settings_v1','soc_dark_mode_v1'
   ];
   const KEY_SET = new Set(SYNC_KEYS);
   const RAW_KEYS = new Set(['soc_monthly_fee_v8','soc_system_title_v1','soc_dark_mode_v1']);
@@ -6061,13 +6107,9 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
       try{if(typeof skillPublicRules!=='undefined'&&data.soc_skill_public_rules_v1!==undefined)skillPublicRules=data.soc_skill_public_rules_v1||{};}catch(_){}
       try{if(typeof activityLogs!=='undefined'&&data.soc_activity_logs_v1!==undefined)activityLogs=data.soc_activity_logs_v1||[];}catch(_){}
       try{if(typeof adminProfile!=='undefined'&&data.soc_admin_profile_v1!==undefined)adminProfile=data.soc_admin_profile_v1||{};}catch(_){}
-      try{if(typeof systemTitle!=='undefined'&&data.soc_system_title_v1!==undefined){systemTitle=data.soc_system_title_v1||'১ নং ক্যাম্প পরিচালনা কমিটি';if(typeof refreshCommunityTitleUI==='function')refreshCommunityTitleUI();}}catch(_){}
+      try{if(typeof systemTitle!=='undefined'&&data.soc_system_title_v1!==undefined)systemTitle=data.soc_system_title_v1||'স্মার্ট সোসাইটি হাব';}catch(_){}
       try{if(typeof publicPrint!=='undefined'&&data.soc_public_print_v1!==undefined)publicPrint=data.soc_public_print_v1||{};}catch(_){}
       try{if(typeof publicSkillCategories!=='undefined'&&data.soc_public_skill_categories_v1!==undefined)publicSkillCategories=data.soc_public_skill_categories_v1||[];}catch(_){}
-      try{if(typeof adminCredentials!=='undefined'&&data.soc_admin_credentials_v1!==undefined)adminCredentials=data.soc_admin_credentials_v1||{};}catch(_){}
-      try{if(typeof adminIdHistory!=='undefined'&&data.soc_admin_id_history_v1!==undefined)adminIdHistory=data.soc_admin_id_history_v1||[];}catch(_){}
-      try{if(typeof window.__scHydrateSuperAdminState==='function')window.__scHydrateSuperAdminState(data);}catch(e){console.warn('Super Admin state refresh:',e);}
-      try{if(typeof window.__scHydratePrintSettings==='function')window.__scHydratePrintSettings(data);}catch(e){console.warn('Settings refresh:',e);}
       ['renderDashboard','renderFamilies','renderNotices','renderCommittee','renderEmergencyNumbers','renderCollectorPage','renderSkills','renderBloodDonors','renderUsersList'].forEach(n=>{try{if(typeof window[n]==='function')window[n]();}catch(e){console.warn('Render refresh:',n,e);}});
       try{if(typeof updateUIPermissions==='function')updateUIPermissions();}catch(_){}
       try{if(typeof updateIdentityBadge==='function')updateIdentityBadge();}catch(_){}
@@ -6082,22 +6124,16 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
       const listen=()=>dbRef.on('value',snap=>{
         const root=snap.val()||{};const remote=root.data||{};
         const fingerprint=JSON.stringify(remote);
-        ready=true;
-        if(initialSnapshotHandled&&fingerprint===lastRemoteFingerprint)return;
-        const isFirst=!initialSnapshotHandled;
+        if(initialSnapshotHandled&&fingerprint===lastRemoteFingerprint){ready=true;return;}
         initialSnapshotHandled=true;lastRemoteFingerprint=fingerprint;
-        if(!Object.keys(remote).length){pushAllLocal();return;}
-        // A Firebase snapshot is the shared source of truth across browsers.
-        // Do not apply an echo while a local write is still being committed.
-        if(writeInProgress||pendingWrites.size){
-          const missing=SYNC_KEYS.filter(k=>!Object.prototype.hasOwnProperty.call(remote,k));
-          if(missing.length)queueKeys(missing);
+        ready=true;
+        // Do not let our own pending writes or an echo replace a newer local edit.
+        if(writeInProgress||pendingWrites.size||localMatchesRemote(remote)){
+          if(!Object.keys(remote).length)pushAllLocal();
           return;
         }
-        if(!localMatchesRemote(remote))applyRemote(remote);
-        else if(isFirst)applyRemote(remote);
-        // Always initialize newly-added keys on the shared database. Previously this
-        // branch was skipped when the existing keys happened to match local storage.
+        if(!Object.keys(remote).length){pushAllLocal();return;}
+        applyRemote(remote);
         const missing=SYNC_KEYS.filter(k=>!Object.prototype.hasOwnProperty.call(remote,k));
         if(missing.length)queueKeys(missing);
       },err=>{console.error('Firebase listener error:',err);ready=false;setStatus('error','Firebase Listener Error: '+(err&&err.code?err.code+' — ':'')+(err&&err.message?err.message:'অজানা সমস্যা'));});
@@ -6108,30 +6144,54 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
   Storage.prototype.removeItem=function(key){nativeRemove.call(this,key);if(this===localStorage&&KEY_SET.has(String(key)))queueKeys([String(key)]);};
   window.addEventListener('sc:local-data-saved',()=>queueKeys(SYNC_KEYS));
   window.addEventListener('storage',e=>{if(e.key&&KEY_SET.has(e.key))queueKeys([e.key]);});
-  window.addEventListener('online',()=>{if(ready){setStatus('busy','ইন্টারনেট ফিরে এসেছে, সিংক হচ্ছে...');pushAllLocal();}});
-  window.addEventListener('focus',()=>{if(ready&&!writeInProgress&&!pendingWrites.size)dbRef.once('value').then(snap=>{const remote=(snap.val()||{}).data||{};if(!localMatchesRemote(remote))applyRemote(remote);}).catch(e=>console.warn('Firebase refresh failed:',e));});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
 </script>
 <!-- END SMART COMMUNITY FIREBASE REALTIME DATABASE SYNC -->
 
-<!-- GitHub Pages deployment freshness check: reload only when a newer index.html is published. -->
+
+<!-- ADMIN/USER PRINT CONTROLS: Blood donation + Occupation -->
+<style id="admin-print-controls-style">
+  body:not(.authenticated-ui) .admin-print-control{display:none!important}
+  body.authenticated-ui .admin-print-control{display:inline-flex!important;visibility:visible!important;opacity:1!important}
+  #sec-blood .admin-print-control,#sec-skill .admin-print-control{align-items:center;justify-content:center;gap:.45rem;min-height:38px;white-space:nowrap}
+</style>
 <script>
 (function(){
-  const current=document.querySelector('meta[name="sc-build"]')?.content;
-  if(!current||!('fetch' in window))return;
-  try{
-    const u=new URL(location.pathname,location.origin);
-    u.searchParams.set('__sc_build_check',String(Date.now()));
-    fetch(u.href,{cache:'no-store',credentials:'same-origin'}).then(r=>r.ok?r.text():null).then(html=>{
-      if(!html)return;
-      const m=html.match(/<meta\s+name=["']sc-build["']\s+content=["']([^"']+)["']/i);
-      if(m&&m[1]!==current){
-        const target=new URL(location.href);target.searchParams.set('v',m[1]);target.searchParams.set('refresh',String(Date.now()));
-        location.replace(target.href);
-      }
-    }).catch(()=>{});
-  }catch(_){}
+  function syncPrintAccess(){
+    const allowed=!!window.currentUser || (typeof currentUser!=='undefined' && !!currentUser);
+    document.body.classList.toggle('authenticated-ui',allowed);
+    document.querySelectorAll('[data-admin-print]').forEach(btn=>{
+      btn.style.display=allowed?'inline-flex':'none';
+      btn.setAttribute('aria-hidden',allowed?'false':'true');
+    });
+  }
+  const oldLogin=window.handleLogin;
+  if(typeof oldLogin==='function') window.handleLogin=function(){
+    const result=oldLogin.apply(this,arguments);
+    Promise.resolve().then(syncPrintAccess);
+    return result;
+  };
+  const oldToggle=window.toggleAuthModal;
+  if(typeof oldToggle==='function') window.toggleAuthModal=function(){
+    const wasLoggedIn=!!currentUser;
+    const result=oldToggle.apply(this,arguments);
+    Promise.resolve().then(syncPrintAccess);
+    return result;
+  };
+  document.addEventListener('DOMContentLoaded',syncPrintAccess);
+  syncPrintAccess();
+  // Printing is available only after a successful login.
+  const oldBlood=window.printBloodDonorsTable;
+  if(typeof oldBlood==='function') window.printBloodDonorsTable=function(){
+    if(!currentUser){showToast('প্রিন্ট করতে Admin/User হিসেবে লগইন করুন');return;}
+    return oldBlood.apply(this,arguments);
+  };
+  const oldSkill=window.printSkillsTable;
+  if(typeof oldSkill==='function') window.printSkillsTable=function(){
+    if(!currentUser){showToast('প্রিন্ট করতে Admin/User হিসেবে লগইন করুন');return;}
+    return oldSkill.apply(this,arguments);
+  };
 })();
 </script>
 
