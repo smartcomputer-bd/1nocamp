@@ -4331,6 +4331,8 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
 /* ===== 03 Nov 2026 targeted role, receipt, printer and mobile refinements ===== */
 (function(){
  'use strict';
+ // Bridge top-level lexical application state for the additive dashboard handlers.
+ ['families','committee','notices','currentUser'].forEach(k=>{try{if(!Object.prototype.hasOwnProperty.call(window,k))Object.defineProperty(window,k,{configurable:true,get:()=>({families,committee,notices,currentUser})[k]});}catch(_){ }});
  const $=id=>document.getElementById(id);
  const read=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
  const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -5073,7 +5075,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
   };
   const relationList = () => {
     let saved=[]; try{saved=JSON.parse(localStorage.getItem('soc_family_relations_v1')||'[]')}catch(e){}
-    const defaults=['স্ত্রী','স্বামী','পিতা','মাতা','ছেলে','মেয়ে','পুত্র','কন্যা','ভাই','বোন','বড় ভাই','ছোট ভাই','বড় বোন','ছোট বোন','দাদা','দাদি','নানা','নানি','নাতি','নাতনি','চাচা','চাচি','জেঠা','জেঠি','মামা','মামী','খালা','খালু','ফুফা','ফুফু','দুলাভাই','ভাবি','জামাই','পুত্রবধূ','নাতজামাই','অন্যান্য'];
+    const defaults=['স্ত্রী','স্বামী','পিতা','মাতা','পুত্র','কন্যা','পুত্রবধূ','ভাই','বোন','দাদা','দাদি','নানা','নানি','নাতি','নাতনি','চাচা','চাচি','জেঠা','জেঠি','মামা','মামী','খালা','খালু','ফুফা','ফুফু','দুলাভাই','ভাবি','জামাই','অন্যান্য'];
     return uniq([...defaults,...saved,...(families||[]).flatMap(f=>(f.members||[]).map(m=>m.relation))]);
   };
   function ensureDatalist(id, values){let el=$(id);if(!el){el=document.createElement('datalist');el.id=id;document.body.appendChild(el)}el.innerHTML=uniq(values).map(v=>`<option value="${esc(v)}"></option>`).join('');return el;}
@@ -6083,7 +6085,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     try{
       // One atomic update prevents partial snapshots overwriting a newer family list.
       await dbRef.child('data').update(payload);
-      lastWriteFailed=false;setStatus('online','Firebase সিংক সম্পন্ন');
+      lastWriteFailed=false;setStatus('online','Firebase সিংক সম্পন্ন');if(window.scShowSuccess)window.scShowSuccess('Firebase সিংক সম্পন্ন','আপনার পরিবর্তন ক্লাউডে নিরাপদে সংরক্ষিত হয়েছে।');
     }catch(error){
       console.error('Firebase atomic update failed:',error);
       keys.forEach(k=>pendingWrites.add(k));
@@ -6241,6 +6243,149 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     try{return nativePrint();}
     finally{clearTimeout(cleanupTimer);cleanupTimer=setTimeout(cleanup,2500);}
   };
+})();
+</script>
+
+
+<style id="sc-requested-updates-v2">
+/* Soft illuminated masthead */
+header.bg-slate-900{background:linear-gradient(115deg,#e0f2fe 0%,#ecfdf5 38%,#f5f3ff 72%,#fff7ed 100%)!important;color:#123047!important;border-bottom:1px solid #bfdbfe!important;box-shadow:0 8px 24px #0f172a18!important}
+header #headerGuestLabel,header #headerUserName{color:#164e63!important}
+header #headerUserRole{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important}
+header .sc-system-title{background:linear-gradient(90deg,#075985,#047857,#6d28d9,#b45309,#075985)!important;background-size:300% auto!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;filter:drop-shadow(0 2px 1px #ffffff)!important;font-weight:1000!important}
+header .sc-home3d{background:linear-gradient(145deg,#dbeafe,#a7f3d0 55%,#c4b5fd)!important;color:#075985!important;box-shadow:inset 4px 4px 9px #fff, inset -5px -6px 10px #64748b33,0 8px 18px #0f172a25!important}
+header nav{background:linear-gradient(90deg,#164e63,#134e4a,#312e81)!important}
+#systemNameHeader{overflow-wrap:anywhere}
+#familyMembersInputContainer .member-input-row{position:relative}
+.sc-member-order{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.sc-member-order button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:3px 8px;color:#334155;font-size:11px;font-weight:800}
+.sc-member-order button:hover{background:#dbeafe;border-color:#60a5fa}
+.sc-member-number{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:8px;background:#d1fae5;color:#065f46;font-weight:900}
+.sc-pop-success{position:fixed;inset:0;z-index:30000;display:grid;place-items:center;padding:20px;background:#0f172a55;backdrop-filter:blur(5px);animation:scSuccessFade .22s ease}
+.sc-pop-success-card{width:min(330px,90vw);padding:25px 22px;border-radius:24px;text-align:center;background:linear-gradient(145deg,#fff,#ecfdf5);box-shadow:0 25px 80px #02061766;border:1px solid #a7f3d0;animation:scSuccessPop .4s cubic-bezier(.2,.9,.25,1.2)}
+.sc-success-ring{width:68px;height:68px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:32px;background:linear-gradient(145deg,#10b981,#059669);box-shadow:0 0 0 9px #a7f3d055;animation:scSuccessRing .55s ease}
+@keyframes scSuccessFade{from{opacity:0}to{opacity:1}}
+@keyframes scSuccessPop{from{opacity:0;transform:translateY(22px) scale(.85)}to{opacity:1;transform:none}}
+@keyframes scSuccessRing{from{transform:scale(.4) rotate(-35deg)}to{transform:scale(1) rotate(0)}}
+@media(max-width:640px){
+ header{position:sticky!important;top:0!important;padding-top:env(safe-area-inset-top)!important}
+ header .max-w-7xl{max-width:100%;width:100%}
+ header nav{position:relative;max-width:100%;overscroll-behavior-x:contain}
+ body{overflow-x:hidden;min-height:100svh;min-height:100dvh}
+ main{width:100%;max-width:100vw;overflow-x:clip}
+ .fixed.inset-0{padding-left:max(.5rem,env(safe-area-inset-left))!important;padding-right:max(.5rem,env(safe-area-inset-right))!important}
+ .fixed.inset-0>div{width:min(100%,38rem)!important;max-height:calc(var(--sc-vv-height,100dvh) - 1.5rem - var(--sc-bottom-safe,28px))!important}
+}
+@media(min-width:641px){main{width:100%;max-width:80rem}}
+</style>
+<script id="sc-requested-updates-v2-js">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ window.scShowSuccess=function(message,detail=''){
+   document.getElementById('scSuccessOverlay')?.remove();
+   const el=document.createElement('div');el.id='scSuccessOverlay';el.className='sc-pop-success';
+   el.innerHTML=`<div class="sc-pop-success-card"><div class="sc-success-ring"><i class="fa-solid fa-check"></i></div><div class="text-lg font-black text-emerald-800">${esc(message)}</div><p class="text-xs text-slate-500 mt-1">${esc(detail||'আপনার পরিবর্তন সফলভাবে সংরক্ষিত হয়েছে।')}</p><div class="mt-4 h-1 rounded-full bg-emerald-100 overflow-hidden"><div style="height:100%;width:100%;background:#10b981;transform-origin:left;animation:scSuccessBar 2.2s linear"></div></div></div>`;
+   document.body.appendChild(el);setTimeout(()=>el.remove(),2300);
+ };
+ const extraStyle=document.createElement('style');extraStyle.textContent='@keyframes scSuccessBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}';document.head.appendChild(extraStyle);
+
+ // Family member order: explicit up/down controls; saved order follows visible row order.
+ function refreshMemberNumbers(){
+   const rows=[...document.querySelectorAll('#familyMembersInputContainer .member-input-row')];
+   rows.forEach((row,i)=>{
+     let bar=row.querySelector('.sc-member-order');
+     if(!bar){bar=document.createElement('div');bar.className='sc-member-order mb-1';row.insertBefore(bar,row.firstChild);}
+     bar.innerHTML=`<span class="sc-member-number">${i+1}</span><b class="text-[11px] text-slate-600">সদস্যের ক্রম</b><button type="button" data-move="-1" ${i===0?'disabled':''}>↑ উপরে</button><button type="button" data-move="1" ${i===rows.length-1?'disabled':''}>↓ নিচে</button>`;
+   });
+ }
+ const memberContainer=$('familyMembersInputContainer');
+ if(memberContainer){
+   new MutationObserver(refreshMemberNumbers).observe(memberContainer,{childList:true});
+   memberContainer.addEventListener('click',e=>{
+     const b=e.target.closest('button[data-move]');if(!b)return;
+     const row=b.closest('.member-input-row'),dir=Number(b.dataset.move);
+     if(dir<0&&row.previousElementSibling)memberContainer.insertBefore(row,row.previousElementSibling);
+     if(dir>0&&row.nextElementSibling)memberContainer.insertBefore(row.nextElementSibling,row);
+     refreshMemberNumbers();
+   });
+ }
+ const addRow=window.addMemberInputRow;
+ if(typeof addRow==='function'&&!addRow.__scOrderWrapped){
+   window.addMemberInputRow=function(){const r=addRow.apply(this,arguments);refreshMemberNumbers();return r;};
+   window.addMemberInputRow.__scOrderWrapped=true;
+ }
+ const editFam=window.editFamily;
+ if(typeof editFam==='function'&&!editFam.__scOrderWrapped){
+   window.editFamily=function(){const r=editFam.apply(this,arguments);setTimeout(refreshMemberNumbers,0);return r;};
+   window.editFamily.__scOrderWrapped=true;
+ }
+
+ // Population card shows gender and occupation breakdown.
+ window.renderDashboard=function(){
+   const fs=window.families||[],cs=window.committee||[];
+   $('statTotalFamilies').textContent=fs.length;
+   const people=[];
+   fs.forEach(f=>{people.push({gender:f.headGender,occupation:f.headOccupation});(f.members||[]).forEach(m=>people.push({gender:m.gender,occupation:m.occupation}));});
+   const males=people.filter(p=>p.gender==='পুরুষ'||p.gender==='Male').length;
+   const females=people.filter(p=>p.gender==='নারী'||p.gender==='মহিলা'||p.gender==='Female').length;
+   const occ={};
+   people.forEach(p=>String(p.occupation||'').split(/[,،]/).map(x=>x.trim()).filter(Boolean).forEach(x=>occ[x]=(occ[x]||0)+1));
+   $('statTotalMembers').textContent=people.length;
+   let breakdown=$('scPopulationBreakdown');
+   if(!breakdown){breakdown=document.createElement('span');breakdown.id='scPopulationBreakdown';breakdown.className='text-[11px] leading-relaxed font-bold mt-2 opacity-95';const card=$('statTotalMembers').closest('button');card.querySelector('.sc-stat-hint')?.before(breakdown);}
+   const top=Object.entries(occ).sort((a,b)=>b[1]-a[1]).slice(0,5);
+   breakdown.innerHTML=`<span>♂ পুরুষ: ${males} জন</span> <span class="ml-2">♀ মহিলা: ${females} জন</span><br><span>পেশাভিত্তিক: ${top.length?top.map(([n,c])=>`${esc(n)} ${c}`).join(' · '):'তথ্য নেই'}</span>`;
+   let donors=0;fs.forEach(f=>{if(f.headBlood)donors++;donors+=(f.members||[]).filter(m=>m.blood).length;});
+   $('statTotalDonors').textContent=donors;$('statTotalCommittee').textContent=cs.length;
+   const marquee=$('noticeTickerContent');
+   if(marquee){const urgent=(window.notices||[]).filter(n=>(n.categories||[]).includes('জরুরী'));marquee.textContent=urgent.length?urgent.map(n=>`🚨 [${n.date||''}] ${n.title||''}: ${n.body||''}`).join(' • '):'বর্তমানে কোনো জরুরী নোটিশ প্রকাশিত নেই।';}
+ };
+
+ // Interactive donor group selector and direct-call list; members use their household contact number.
+ window.scDashboardBloodGroup=window.scDashboardBloodGroup||'ALL';
+ window.scRenderDashboardDonors=function(){
+   const fs=window.families||[],ds=[];
+   fs.forEach(f=>{if(f.headBlood)ds.push({name:f.headName,blood:f.headBlood,mobile:f.headMobile,house:f.houseNo,rel:'পরিবার প্রধান'});(f.members||[]).forEach(m=>{if(m.blood)ds.push({name:m.name,blood:m.blood,mobile:m.mobile||f.headMobile,house:f.houseNo,rel:m.relation||'সদস্য'});});});
+   const groups=['ALL','A+','A-','B+','B-','AB+','AB-','O+','O-'];
+   const chosen=window.scDashboardBloodGroup;
+   const filtered=chosen==='ALL'?ds:ds.filter(d=>d.blood===chosen);
+   return `<div class="space-y-3"><label class="text-xs font-bold text-slate-700">রক্তের গ্রুপ নির্বাচন করুন</label><select onchange="window.scDashboardBloodGroup=this.value;document.getElementById('scDashboardDonorList').innerHTML=window.scRenderDashboardDonors()" class="w-full border rounded-xl p-2 text-sm bg-white">${groups.map(g=>`<option value="${g}" ${g===chosen?'selected':''}>${g==='ALL'?'সকল গ্রুপ':g}</option>`).join('')}</select><p class="text-xs font-bold text-rose-700">মোট ${filtered.length} জন রক্তদাতা</p><div id="scDashboardDonorList" class="space-y-2">${filtered.map(d=>`<article class="border rounded-xl p-3 flex justify-between items-center gap-2"><div class="min-w-0"><b class="text-sm">${esc(d.name)}</b><p class="text-xs text-slate-500">ঘর ${esc(d.house)} · ${esc(d.rel)} · ${esc(d.mobile)}</p></div><div class="flex items-center gap-2 shrink-0"><b class="bg-rose-100 text-rose-700 rounded-lg px-2 py-1">${esc(d.blood)}</b>${d.mobile?`<a class="bg-emerald-600 text-white rounded-lg px-3 py-2 text-xs font-bold" href="tel:${esc(d.mobile).replace(/[^0-9+]/g,'')}"><i class="fa fa-phone"></i> কল</a>`:''}</div></article>`).join('')||'<p class="text-center text-slate-400 p-4">এই গ্রুপে রক্তদাতা পাওয়া যায়নি।</p>'}</div></div>`;
+ };
+ const oldDetail=window.openDashboardDetail;
+ window.openDashboardDetail=function(type){
+   if(type!=='members'&&type!=='donors'&&type!=='committee')return oldDetail?.(type);
+   const fs=window.families||[],cs=window.committee||[];
+   if(type==='members'){
+     const people=[];fs.forEach(f=>{people.push({name:f.headName,house:f.houseNo,relation:'পরিবার প্রধান',gender:f.headGender});(f.members||[]).forEach(m=>people.push({name:m.name,house:f.houseNo,relation:m.relation||'সদস্য',gender:m.gender}));});
+     const male=people.filter(p=>p.gender==='পুরুষ').length,female=people.filter(p=>['নারী','মহিলা'].includes(p.gender)).length;
+     const occ={};fs.forEach(f=>[f.headOccupation,...(f.members||[]).map(m=>m.occupation)].forEach(v=>String(v||'').split(/[,،]/).map(x=>x.trim()).filter(Boolean).forEach(x=>occ[x]=(occ[x]||0)+1)));
+     const occupation=Object.entries(occ).sort((a,b)=>b[1]-a[1]).map(([n,c])=>`<span class="inline-block bg-indigo-50 text-indigo-800 rounded-lg px-2 py-1 m-1">${esc(n)}: ${c}</span>`).join('');
+     showDynamicDetail('👥 জনসংখ্যা ও পেশাভিত্তিক পরিসংখ্যান',`<div class="space-y-3"><div class="grid grid-cols-3 gap-2 text-center"><div class="bg-blue-50 rounded-xl p-3"><b class="text-2xl text-blue-700">${people.length}</b><p class="text-xs">মোট</p></div><div class="bg-sky-50 rounded-xl p-3"><b class="text-2xl text-sky-700">${male}</b><p class="text-xs">পুরুষ</p></div><div class="bg-pink-50 rounded-xl p-3"><b class="text-2xl text-pink-700">${female}</b><p class="text-xs">মহিলা</p></div></div><h4 class="font-bold text-sm">পেশাভিত্তিক সদস্য সংখ্যা</h4><div>${occupation||'পেশার তথ্য নেই'}</div><div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="bg-slate-100"><th class="p-2">নাম</th><th class="p-2">ঘর</th><th class="p-2">সম্পর্ক</th><th class="p-2">লিঙ্গ</th></tr></thead><tbody>${people.map(p=>`<tr class="border-b"><td class="p-2 font-bold">${esc(p.name)}</td><td class="p-2">${esc(p.house)}</td><td class="p-2">${esc(p.relation)}</td><td class="p-2">${esc(p.gender)}</td></tr>`).join('')}</tbody></table></div></div>`);
+   }else if(type==='donors'){
+     window.scDashboardBloodGroup='ALL';
+     showDynamicDetail('🩸 রক্তদাতা সদস্য — গ্রুপ নির্বাচন ও কল',window.scRenderDashboardDonors());
+   }else{
+     const list=cs.slice().sort((a,b)=>(parseInt(a.serial)||99)-(parseInt(b.serial)||99));
+     showDynamicDetail('🛡️ পরিচালনা কমিটি — সরাসরি কল',`<div class="space-y-2"><p class="text-xs text-slate-500">মোট ${list.length} জন কমিটি সদস্য</p>${list.map(c=>`<article class="rounded-xl border p-3 flex items-center gap-3">${c.photo?`<img src="${c.photo}" class="w-12 h-12 rounded-full object-cover">`:'<span class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 grid place-items-center"><i class="fa fa-user"></i></span>'}<div class="min-w-0 flex-1"><b class="text-sm">${esc(c.name)}</b><p class="text-xs text-slate-500">${esc(c.designation)} · ${esc(c.mobile)}</p></div>${c.mobile?`<a href="tel:${esc(c.mobile).replace(/[^0-9+]/g,'')}" class="bg-emerald-600 text-white rounded-lg px-3 py-2 text-xs font-bold"><i class="fa fa-phone"></i> কল</a>`:''}</article>`).join('')||'<p class="text-center text-slate-400 p-5">কমিটি সদস্য নেই।</p>'}</div>`);
+   }
+ };
+
+ // Successful login gets an animated confirmation.
+ const login=window.handleLogin;
+ if(typeof login==='function'&&!login.__scSuccessWrapped){
+   window.handleLogin=function(e){const before=window.currentUser?.id;const r=login.apply(this,arguments);if(!before&&window.currentUser?.id)setTimeout(()=>window.scShowSuccess('লগইন সফল হয়েছে','স্বাগতম! আপনার অ্যাকাউন্ট সক্রিয়।'),80);return r;};
+   window.handleLogin.__scSuccessWrapped=true;
+ }
+ // Dynamic viewport updates for browser chrome, orientation and mobile keyboard.
+ function updateViewport(){
+   const vv=window.visualViewport,root=document.documentElement;
+   if(vv){root.style.setProperty('--sc-vv-height',Math.round(vv.height)+'px');root.style.setProperty('--sc-vv-top',Math.max(0,Math.round(vv.offsetTop))+'px');}
+   else root.style.setProperty('--sc-vv-height',(window.innerHeight||document.documentElement.clientHeight)+'px');
+ }
+ updateViewport();window.addEventListener('resize',updateViewport,{passive:true});window.addEventListener('orientationchange',()=>setTimeout(updateViewport,150),{passive:true});
+ if(window.visualViewport){visualViewport.addEventListener('resize',updateViewport,{passive:true});visualViewport.addEventListener('scroll',updateViewport,{passive:true});}
 })();
 </script>
 
