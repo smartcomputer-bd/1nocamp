@@ -864,6 +864,8 @@
                         </div>
                     </div>
 
+                    <div id="subDueHistorySummary" class="space-y-2"></div>
+
                     <div class="space-y-2">
                         <label class="block text-xs font-extrabold text-slate-800">বকেয়া মাসের তালিকা (মাস সিলেক্ট করুন):</label>
                         <div id="subDueMonthsContainer" class="max-h-40 overflow-y-auto custom-scrollbar space-y-1.5 p-2 bg-slate-50 border border-slate-200 rounded-2xl">
@@ -6566,8 +6568,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    const cfg=JSON.parse(localStorage.getItem('soc_print_settings_v1')||'{"format":"A4","width":80}');
    const qr=qrBlock(r);
    const box=$('printAreaTable');if(!box)return alert('প্রিন্ট এরিয়া পাওয়া যায়নি।');
-   box.innerHTML=`<div style="font-family:Arial,sans-serif;color:#111;width:100%;max-width:${cfg.format==='POS'?Math.max(30,Number(cfg.width||80)-5)+'mm':'420px'};margin:0 auto;border:1px solid #111;padding:12px;box-sizing:border-box;font-size:11px;background:#fff"><header style="text-align:center;border-bottom:1px solid #111;padding-bottom:8px;margin-bottom:8px"><h2 style="font-size:17px;margin:0">${esc(typeof systemTitle!=='undefined'?systemTitle:'স্মার্ট কমিউনিটি')}</h2><b>মাসিক চাঁদা আদায়ের রশিদ</b><p style="margin:3px 0">রশিদ নং: ${esc(r.receiptNo||'—')}</p></header><p><b>ঘর নম্বর:</b> ${esc(r.houseNo||fam.houseNo||'—')}</p><p><b>কর্তার নাম:</b> ${esc(r.headName||fam.headName||'—')}</p><p><b>পেশা:</b> ${esc(r.headOccupation||fam.headOccupation||'—')}</p><p><b>মোবাইল:</b> ${esc(r.headMobile||fam.headMobile||'—')}</p><div style="border-top:1px dashed #333;border-bottom:1px dashed #333;padding:7px 0;margin:7px 0"><b>আদায়কৃত মাসের হিসাব</b><p style="margin:5px 0">${(r.paidMonthsLabels||[]).map(esc).join(', ')||'—'}</p><div style="display:flex;justify-content:space-between;font-weight:bold"><span>সর্বমোট আদায়:</span><span>${esc(r.totalAmount||0)} টাকা</span></div></div><p><b>আদায়ের তারিখ:</b> ${esc(r.dateStr||r.dateISO||'—')} &nbsp; <b>সময়:</b> ${esc(r.timeStr||'—')}</p><div style="display:flex;justify-content:space-between;align-items:end;margin-top:14px"><div><b>আদায়কারী:</b> ${esc(r.collectedBy||'—')}<br><b>পদবী:</b> ${esc(r.collectedByRole||'—')}</div><div style="text-align:center;min-width:95px">${sig?`<img src="${sig}" style="max-width:95px;max-height:38px;object-fit:contain;display:block;margin:auto">`:'<div style="border-bottom:1px solid #111;height:30px"></div>'}<small>আদায়কারীর স্বাক্ষর</small></div></div>${qr}<p style="text-align:center;border-top:1px solid #aaa;padding-top:5px;margin-top:8px;font-size:9px">এই রশিদ সফটওয়্যার দ্বারা তৈরি করা হয়েছে।</p></div>`;
-   let st=$('scFinalReceiptPrintStyle');if(!st){st=document.createElement('style');st.id='scFinalReceiptPrintStyle';document.head.appendChild(st);}st.textContent='@media print{@page{size:'+(cfg.format==='POS'?Math.max(30,Number(cfg.width||80))+'mm auto':'A4 portrait')+';margin:8mm}body *{visibility:hidden!important}#printAreaTable,#printAreaTable *{visibility:visible!important}#printAreaTable{display:block!important;position:absolute!important;left:0;top:0;width:100%!important;background:#fff!important}#printAreaTable .sc-receipt-qr{break-inside:avoid}}';
+   box.classList.add('sc-receipt-print');box.classList.remove('sc-a4-print');
+   box.innerHTML=`<div class="sc-receipt-print-inner" style="font-family:'Hind Siliguri',Arial,sans-serif;color:#111;width:100%;max-width:51mm;margin:0 auto;border:1px solid #111;padding:2.2mm;box-sizing:border-box;font-size:9pt;background:#fff;overflow-wrap:anywhere"><header style="text-align:center;border-bottom:1px solid #111;padding-bottom:8px;margin-bottom:8px"><h2 style="font-size:17px;margin:0">${esc(typeof systemTitle!=='undefined'?systemTitle:'স্মার্ট কমিউনিটি')}</h2><b>মাসিক চাঁদা আদায়ের রশিদ</b><p style="margin:3px 0">রশিদ নং: ${esc(r.receiptNo||'—')}</p></header><p><b>ঘর নম্বর:</b> ${esc(r.houseNo||fam.houseNo||'—')}</p><p><b>কর্তার নাম:</b> ${esc(r.headName||fam.headName||'—')}</p><p><b>পেশা:</b> ${esc(r.headOccupation||fam.headOccupation||'—')}</p><p><b>মোবাইল:</b> ${esc(r.headMobile||fam.headMobile||'—')}</p><div style="border-top:1px dashed #333;border-bottom:1px dashed #333;padding:7px 0;margin:7px 0"><b>আদায়কৃত মাসের হিসাব</b><p style="margin:5px 0">${(r.paidMonthsLabels||[]).map(esc).join(', ')||'—'}</p><div style="display:flex;justify-content:space-between;font-weight:bold"><span>সর্বমোট আদায়:</span><span>${esc(r.totalAmount||0)} টাকা</span></div></div><p><b>আদায়ের তারিখ:</b> ${esc(r.dateStr||r.dateISO||'—')} &nbsp; <b>সময়:</b> ${esc(r.timeStr||'—')}</p><div style="display:flex;justify-content:space-between;align-items:end;margin-top:14px"><div><b>আদায়কারী:</b> ${esc(r.collectedBy||'—')}<br><b>পদবী:</b> ${esc(r.collectedByRole||'—')}</div><div style="text-align:center;min-width:95px">${sig?`<img src="${sig}" style="max-width:95px;max-height:38px;object-fit:contain;display:block;margin:auto">`:'<div style="border-bottom:1px solid #111;height:30px"></div>'}<small>আদায়কারীর স্বাক্ষর</small></div></div>${qr}<p style="text-align:center;border-top:1px solid #aaa;padding-top:5px;margin-top:8px;font-size:9px">এই রশিদ সফটওয়্যার দ্বারা তৈরি করা হয়েছে।</p></div>`;
+   let st=$('scFinalReceiptPrintStyle');if(!st){st=document.createElement('style');st.id='scFinalReceiptPrintStyle';document.head.appendChild(st);}st.textContent='@page scReceipt{size:55mm 120mm;margin:2mm}@media print{#printAreaTable.sc-receipt-print{page:scReceipt!important;width:51mm!important;max-width:51mm!important;margin:0 auto!important;padding:0!important;box-sizing:border-box!important}#printAreaTable.sc-receipt-print .sc-receipt-print-inner{width:100%!important;max-width:100%!important;margin:0 auto!important;padding:2mm!important;box-sizing:border-box!important;font-size:8.5pt!important}#printAreaTable .sc-receipt-qr{break-inside:avoid;display:flex!important;gap:2mm!important}#printAreaTable .sc-receipt-qr img{width:22mm!important;height:22mm!important;max-width:22mm!important;max-height:22mm!important}body *{visibility:hidden!important}#printAreaTable,#printAreaTable *{visibility:visible!important}#printAreaTable{display:block!important;position:absolute!important;left:0!important;top:0!important;background:#fff!important;color:#111!important}}';
    window.print();
  };
  function bindAdmin(){addBackupPanel();addPlateTemplate();}
@@ -6581,19 +6584,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <style>
 #scFamilyCardModal{z-index:32000;background:rgba(2,6,23,.78);backdrop-filter:blur(7px)}
 #scFamilyCardModal .sc-card-shell{width:min(96vw,760px);max-height:94dvh;overflow:auto;background:#fff;border-radius:22px;padding:16px}
-#scFamilyMemberCard{width:100%;max-width:680px;min-height:330px;margin:0 auto;position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#eff6ff,#fff 48%,#ecfdf5);border:2px solid #0f766e;padding:22px;color:#0f172a;box-shadow:0 12px 30px #0f172a22;font-family:'Hind Siliguri',sans-serif}
-#scFamilyMemberCard .sc-card-top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0f766e;padding-bottom:10px;margin-bottom:15px;gap:12px}
-#scFamilyMemberCard .sc-card-brand{font-weight:900;font-size:20px;color:#064e3b}
-#scFamilyMemberCard .sc-card-tag{font-size:11px;font-weight:800;background:#0f766e;color:#fff;padding:5px 10px;border-radius:999px;white-space:nowrap}
-#scFamilyMemberCard .sc-card-main{display:grid;grid-template-columns:132px 1fr 116px;gap:16px;align-items:center}
-#scFamilyMemberCard .sc-card-photo{width:126px;height:150px;object-fit:cover;border:4px solid #fff;border-radius:14px;box-shadow:0 2px 12px #0f172a25;background:#e2e8f0}
-#scFamilyMemberCard .sc-card-name{font-size:21px;font-weight:900;color:#0f172a;line-height:1.35}
-#scFamilyMemberCard .sc-card-house{display:inline-block;background:#0f172a;color:#fff;border-radius:8px;padding:5px 10px;font-size:13px;font-weight:900;margin:6px 0}
-#scFamilyMemberCard .sc-card-info{font-size:12px;line-height:1.8;color:#334155}
-#scFamilyMemberCard .sc-card-qr{width:108px;height:108px;padding:5px;background:#fff;border:2px solid #0f172a;border-radius:10px;object-fit:contain}
+#scFamilyMemberCard{width:86mm;max-width:100%;min-height:130mm;margin:0 auto;position:relative;overflow:hidden;border-radius:5mm;background:linear-gradient(145deg,#eff6ff,#fff 48%,#ecfdf5);border:0.7mm solid #0f766e;padding:6mm;color:#0f172a;box-shadow:0 12px 30px #0f172a22;font-family:'Hind Siliguri',sans-serif;box-sizing:border-box}
+#scFamilyMemberCard .sc-card-top{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border-bottom:2px solid #0f766e;padding-bottom:4mm;margin-bottom:5mm;gap:2mm}
+#scFamilyMemberCard .sc-card-brand{font-weight:900;font-size:17px;color:#064e3b;overflow-wrap:anywhere}
+#scFamilyMemberCard .sc-card-tag{font-size:10px;font-weight:800;background:#0f766e;color:#fff;padding:1.5mm 4mm;border-radius:999px;white-space:nowrap}
+#scFamilyMemberCard .sc-card-main{display:flex;flex-direction:column;gap:3mm;align-items:center;text-align:center}
+#scFamilyMemberCard .sc-card-photo{width:34mm;height:40mm;object-fit:cover;border:1mm solid #fff;border-radius:4mm;box-shadow:0 2px 12px #0f172a25;background:#e2e8f0}
+#scFamilyMemberCard .sc-card-name{font-size:17px;font-weight:900;color:#0f172a;line-height:1.35;overflow-wrap:anywhere}
+#scFamilyMemberCard .sc-card-house{display:inline-block;background:#0f172a;color:#fff;border-radius:2mm;padding:1.5mm 3mm;font-size:12px;font-weight:900;margin:2mm 0}
+#scFamilyMemberCard .sc-card-info{font-size:11px;line-height:1.9;color:#334155;overflow-wrap:anywhere}
+#scFamilyMemberCard .sc-card-qr{width:29mm;height:29mm;padding:1.5mm;background:#fff;border:0.6mm solid #0f172a;border-radius:2mm;object-fit:contain;margin-top:1mm}
 #scFamilyMemberCard .sc-card-members{margin-top:14px;padding-top:10px;border-top:1px dashed #94a3b8;font-size:11px;color:#334155;line-height:1.7}
-#scFamilyMemberCard .sc-card-foot{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:9px;color:#64748b}
-@media(max-width:560px){#scFamilyMemberCard{padding:14px;min-height:0}#scFamilyMemberCard .sc-card-main{grid-template-columns:84px 1fr;gap:10px}#scFamilyMemberCard .sc-card-photo{width:82px;height:100px}#scFamilyMemberCard .sc-card-name{font-size:16px}#scFamilyMemberCard .sc-card-qr{grid-column:1/-1;width:86px;height:86px;justify-self:end}#scFamilyMemberCard .sc-card-brand{font-size:15px}}
+#scFamilyMemberCard .sc-card-foot{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1mm;margin-top:4mm;padding-top:3mm;border-top:1px dashed #94a3b8;font-size:8px;color:#64748b;overflow-wrap:anywhere}
+@media(max-width:560px){#scFamilyMemberCard{width:82mm;min-height:125mm;padding:5mm}#scFamilyMemberCard .sc-card-photo{width:31mm;height:37mm}#scFamilyMemberCard .sc-card-name{font-size:16px}#scFamilyMemberCard .sc-card-qr{width:27mm;height:27mm}#scFamilyMemberCard .sc-card-brand{font-size:15px}}
 </style>
 <script>
 (function(){
@@ -6610,6 +6613,74 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  window.openFamilyMemberCard=async function(idx){const f=(typeof families!=='undefined'?families:[])[idx];if(!f)return showToast?showToast('পরিবারের তথ্য পাওয়া যায়নি'):alert('পরিবারের তথ্য পাওয়া যায়নি');cardFamilyIndex=idx;ensureModal();const m=$('scFamilyCardModal');m.classList.remove('hidden');m.classList.add('flex');$('scCardOrg').textContent=systemTitle||'স্মার্ট কমিউনিটি';$('scCardName').textContent=f.headName||'নাম উল্লেখ নেই';$('scCardHouse').textContent='ঘর নম্বর: '+(f.houseNo||'—');$('scCardInfo').innerHTML=`মোবাইল: <b>${esc(f.headMobile||'—')}</b><br>পেশা: <b>${esc(f.headOccupation||'—')}</b><br>রক্তের গ্রুপ: <b>${esc(f.headBlood||'—')}</b><br>লিঙ্গ: <b>${esc(f.headGender||'—')}</b>`;$('scCardDate').textContent='তৈরির তারিখ: '+new Date().toLocaleDateString('bn-BD');const photo=$('scCardPhoto');photo.src=f.headPhoto||'';photo.onerror=()=>{photo.onerror=null;photo.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="126" height="150"><rect width="100%" height="100%" fill="#dbeafe"/><text x="50%" y="52%" text-anchor="middle" font-size="44" fill="#1e40af">${(f.headName||'ক').trim().charAt(0)}</text></svg>`)};try{await loadQR();const q=$('scFamilyQrWork')||document.createElement('div');q.id='scFamilyQrWork';q.style.cssText='position:fixed;left:-9999px;top:0;background:#fff;padding:4px';q.innerHTML='';document.body.appendChild(q);new QRCode(q,{text:makeQRData(f),width:240,height:240,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});await new Promise(r=>setTimeout(r,150));const canv=q.querySelector('canvas');const img=q.querySelector('img');const data=canv?canv.toDataURL('image/png'):img?.src;if(!data)throw Error('QR তৈরি হয়নি');$('scCardQR').src=data;q.dataset.png=data;}catch(e){$('scCardQR').alt=e.message;alert(e.message)}};
  async function downloadQR(){const q=$('scFamilyQrWork'),data=q?.dataset.png;if(!data)return alert('QR কোড প্রস্তুত হয়নি');const f=(typeof families!=='undefined'?families:[])[cardFamilyIndex];downloadBlob(data,'family-qr-'+(f?.houseNo||'card')+'.png');}
  async function downloadCard(){try{await loadCanvas();const node=$('scFamilyMemberCard');const photo=$('scCardPhoto');if(photo?.complete===false)await new Promise(resolve=>{photo.onload=resolve;photo.onerror=resolve});const canvas=await html2canvas(node,{scale:3,backgroundColor:'#ffffff',useCORS:true,allowTaint:false,logging:false});downloadBlob(canvas.toDataURL('image/png'),'family-member-card-'+(((typeof families!=='undefined'?families:[])[cardFamilyIndex]?.houseNo)||'family')+'.png');}catch(e){alert('কার্ড PNG তৈরি করা যায়নি: '+e.message)}}
+})();
+</script>
+
+
+<!-- FINAL REQUESTED UPDATES: DUE HISTORY, PRINT LAYOUT NORMALIZATION, PORTRAIT CARD -->
+<style id="scFinalPrintLayoutFix">
+@page scA4 { size: A4 portrait; margin: 10mm; }
+@page scReceipt { size: 55mm 120mm; margin: 2mm; }
+@media print {
+  html, body { min-height:0!important; height:auto!important; margin:0!important; padding:0!important; overflow:visible!important; background:#fff!important; }
+  body { -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+  body * { visibility:hidden!important; }
+  #printAreaTable, #printAreaTable * { visibility:visible!important; }
+  #printAreaTable { display:block!important; position:absolute!important; left:0!important; top:0!important; right:auto!important; width:190mm!important; max-width:190mm!important; min-width:0!important; margin:0 auto!important; padding:0!important; border:0!important; box-sizing:border-box!important; overflow:visible!important; background:#fff!important; color:#111!important; font-family:'Hind Siliguri',Arial,sans-serif!important; transform:none!important; }
+  #printAreaTable:not(.sc-receipt-print) { page:scA4!important; }
+  #printAreaTable:not(.sc-receipt-print) table { width:100%!important; max-width:100%!important; border-collapse:collapse!important; table-layout:auto!important; }
+  #printAreaTable:not(.sc-receipt-print) th, #printAreaTable:not(.sc-receipt-print) td { max-width:none!important; overflow-wrap:anywhere!important; word-break:normal!important; box-sizing:border-box!important; }
+  #printAreaTable img { max-width:100%!important; height:auto; }
+  #printAreaTable .sc-receipt-print-inner { box-sizing:border-box!important; }
+  .no-print, button, .no-print * { display:none!important; }
+  tr, img, .page-break-inside-avoid, .sc-receipt-qr { break-inside:avoid!important; page-break-inside:avoid!important; }
+}
+#scFamilyCardModal .sc-card-shell { width:min(96vw,430px)!important; }
+#scFamilyMemberCard { width:86mm!important; min-height:130mm!important; }
+</style>
+<script>
+(function(){
+ 'use strict';
+ const byId=id=>document.getElementById(id);
+ const escHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ // Rebuild the collection search result with the complete month-by-month ledger and arrears totals.
+ window.searchHouseForSub=function(){
+   const input=byId('subHouseNoInput');
+   const hNo=(input?.value||'').trim();
+   if(!hNo)return alert('ঘর নম্বর ইনপুট দিন!');
+   const list=Array.isArray(window.families)?window.families:(typeof families!=='undefined'?families:[]);
+   const family=list.find(f=>String(f.houseNo||'').toUpperCase()===hNo.toUpperCase());
+   if(!family)return alert('উক্ত ঘর নম্বরের কোনো পরিবার পাওয়া যায়নি!');
+   window.activeHouseForSub=family;
+   if(typeof activeHouseForSub!=='undefined') activeHouseForSub=family;
+   const due=calculateHouseDue(family), allMonths=family.subStartMonth?getMonthListFromStartToCurrent(family.subStartMonth):[];
+   const paidSet=getPaidMonthsForHouse(family.houseNo);
+   const payments=(Array.isArray(window.subscriptionPayments)?window.subscriptionPayments:(typeof subscriptionPayments!=='undefined'?subscriptionPayments:[])).filter(p=>String(p.houseNo||'').toUpperCase()===String(family.houseNo||'').toUpperCase());
+   byId('subHeadName').innerText=family.headName||'নাম উল্লেখ নেই';
+   byId('subHeadOccupation').innerText=`পেশা: ${family.headOccupation||'উল্লেখ নেই'}`;
+   byId('subHeadPhoto').src=family.headPhoto||'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80';
+   byId('subStartMonthText').innerText=family.subStartMonth||'নির্ধারিত নয়';
+   const summary=byId('subDueHistorySummary');
+   if(summary){
+     const dueRows=allMonths.map(m=>{const paid=paidSet.has(m.key);const payment=payments.find(p=>(p.paidMonthsKeys||[]).includes(m.key));return `<div class="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg ${paid?'bg-emerald-50':'bg-rose-50'}"><span class="text-[11px] font-semibold text-slate-800">${escHtml(m.label)}</span><span class="text-[10px] font-extrabold ${paid?'text-emerald-700':'text-rose-700'}">${paid?'পরিশোধিত':'বকেয়া'}${paid&&payment?' · '+escHtml(payment.dateStr||payment.dateISO||''):''}</span></div>`;}).join('');
+     const totalPaid=payments.reduce((sum,p)=>sum+(Number(p.totalAmount)||0),0);
+     summary.innerHTML=`<div class="rounded-xl border border-rose-200 bg-rose-50 p-3"><div class="grid grid-cols-3 gap-2 text-center"><div><b class="block text-lg text-rose-700">${due.dueMonths.length}</b><span class="text-[10px] text-slate-600">বকেয়া মাস</span></div><div><b class="block text-lg text-rose-700">${Number(due.dueAmount||0).toLocaleString('bn-BD')}</b><span class="text-[10px] text-slate-600">মোট বকেয়া (টাকা)</span></div><div><b class="block text-lg text-emerald-700">${payments.length}</b><span class="text-[10px] text-slate-600">আদায়ের রশিদ</span></div></div><div class="mt-2 flex justify-between border-t border-rose-200 pt-2 text-[11px]"><span>পূর্বে মোট আদায়</span><b class="text-emerald-700">${totalPaid.toLocaleString('bn-BD')} টাকা</b></div></div><div class="rounded-xl border border-slate-200 p-2"><div class="font-extrabold text-xs text-slate-800 mb-2">চাঁদা শুরুর মাস থেকে বর্তমান পর্যন্ত পূর্ণ হিসাব (${allMonths.length} মাস)</div><div class="max-h-36 overflow-y-auto space-y-1">${dueRows||'<p class="text-xs text-slate-500 text-center p-2">মাসের হিসাব পাওয়া যায়নি</p>'}</div></div>`;
+   }
+   const container=byId('subDueMonthsContainer');
+   if(due.dueMonths.length===0){container.innerHTML='<p class="text-xs text-emerald-700 font-bold p-2 text-center">উক্ত পরিবারের কোনো মাসিক চাঁদা বকেয়া নেই!</p>';byId('subTotalPayableText').innerText='০ টাকা';}
+   else{container.innerHTML=due.dueMonths.map(m=>`<label class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50"><span class="text-xs font-bold text-slate-800">${escHtml(m.label)}</span><div class="flex items-center gap-2"><span class="text-xs font-bold text-rose-600">${Number(monthlyFeeRate).toLocaleString('bn-BD')} টাকা</span><input type="checkbox" value="${escHtml(m.key)}" data-label="${escHtml(m.label)}" onchange="calculateSelectedSubPayable()" class="sub-month-checkbox w-4 h-4 text-emerald-600 rounded"></div></label>`).join('');calculateSelectedSubPayable();}
+   byId('subHouseInfoCard').classList.remove('hidden');
+ };
+ // Mark the receipt container for the fixed 55mm x 120mm paper size.
+ const originalReceiptPrint=window.printCurrentReceipt;
+ if(typeof originalReceiptPrint==='function'&&!originalReceiptPrint.__scReceiptSize){
+   const receiptPrint=function(){const box=byId('printAreaTable');if(box){box.classList.add('sc-receipt-print');box.classList.remove('sc-a4-print');}return originalReceiptPrint.apply(this,arguments);};receiptPrint.__scReceiptSize=true;window.printCurrentReceipt=receiptPrint;
+ }
+ // A4 print jobs get a stable page name and predictable print-area geometry.
+ const oldPrint=window.print;
+ if(typeof oldPrint==='function'&&!oldPrint.__scFinalLayout){
+   const fixedPrint=function(){const box=byId('printAreaTable');if(box&&!box.classList.contains('sc-receipt-print'))box.classList.add('sc-a4-print');return oldPrint.apply(this,arguments);};fixedPrint.__scFinalLayout=true;window.print=fixedPrint;
+ }
 })();
 </script>
 
