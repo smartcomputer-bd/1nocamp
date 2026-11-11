@@ -366,7 +366,7 @@
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-4 items-center justify-between">
                 <div class="w-full sm:w-80 relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                    <input type="text" id="familySearch" oninput="renderFamilies()" placeholder="ঘর নম্বর, কর্তার নাম, মোবাইল বা পেশা..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <div class="flex gap-2"><input type="text" id="familySearch" oninput="renderFamilies()" placeholder="ঘর নম্বর, কর্তার নাম, মোবাইল বা পেশা..." class="w-full min-w-0 pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"><button type="button" onclick="scOpenPlateScanner('family')" class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-camera mr-1"></i> স্ক্যান</button></div>
                 </div>
                 
                 <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
@@ -759,6 +759,23 @@
                     </div>
                 </div>
             </div>
+            <!-- ALWAYS-VISIBLE ADMIN TOOLS MOUNT: backup, recovery and house-plate template -->
+            <div id="scAdminToolsHost" class="grid grid-cols-1 xl:grid-cols-2 gap-5 mt-6">
+                <div id="scBackupPanel" class="sc-backup-card space-y-3">
+                    <div class="flex items-center gap-2"><i class="fa-solid fa-database text-blue-700 text-xl"></i><div><h3 class="font-extrabold text-slate-900">সম্পূর্ণ সফটওয়্যার ব্যাকআপ ও রিকভারি</h3><p class="text-[11px] text-slate-600">পরিবার, সদস্য, চাঁদা, রশিদ, ইউজার ও সেটিংসসহ সংরক্ষিত ডেটা</p></div></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><button id="scBackupNow" type="button" class="bg-blue-700 text-white rounded-xl px-3 py-3 text-xs font-bold"><i class="fa fa-download mr-1"></i> এখনই সম্পূর্ণ ব্যাকআপ ডাউনলোড</button><label class="bg-emerald-700 text-white rounded-xl px-3 py-3 text-xs font-bold text-center cursor-pointer"><i class="fa fa-rotate-left mr-1"></i> ব্যাকআপ ফাইল থেকে রিকভারি<input id="scRestoreFile" type="file" accept=".json,application/json" class="hidden"></label></div>
+                    <div class="border-t border-blue-200 pt-3 space-y-2"><h4 class="font-bold text-sm">শিডিউল অনুযায়ী অটো ব্যাকআপ</h4><div class="grid grid-cols-1 sm:grid-cols-3 gap-2"><select id="scBackupInterval" class="border rounded-lg p-2 text-xs"><option value="daily">প্রতিদিন</option><option value="weekly">প্রতি সপ্তাহে</option><option value="monthly">প্রতি মাসে</option></select><input id="scBackupTime" type="time" value="23:00" class="border rounded-lg p-2 text-xs"><button id="scSaveSchedule" type="button" class="bg-indigo-700 text-white rounded-lg p-2 text-xs font-bold">শিডিউল সংরক্ষণ</button></div><p id="scBackupScheduleStatus" class="text-[11px] text-slate-600">শিডিউল লোড হচ্ছে...</p><p class="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg p-2">স্বয়ংক্রিয় ব্যাকআপ নির্ধারিত সময়ে চালাতে সফটওয়্যার/ব্রাউজার খোলা থাকতে হবে। ব্যাকআপ এই ডিভাইসের IndexedDB-তে থাকবে; আলাদা JSON ফাইলও ডাউনলোড করে নিরাপদে রাখুন।</p></div>
+                    <div class="flex flex-wrap items-center gap-2"><button id="scExportScheduled" type="button" class="border bg-white rounded-lg px-3 py-2 text-xs font-bold">সর্বশেষ শিডিউল ব্যাকআপ ডাউনলোড</button><span id="scBackupLastRun" class="text-[10px] text-slate-500"></span></div>
+                </div>
+                <div id="scPlateTemplateCard" class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
+                    <h3 class="font-extrabold"><i class="fa fa-id-card text-indigo-600 mr-2"></i>ঘরের নম্বর প্লেটের নমুনা ছবি আপলোড</h3>
+                    <p class="text-xs text-slate-500">আপনার এলাকার ঘরের নম্বর প্লেটের একটি পরিষ্কার নমুনা ছবি আপলোড করে সংরক্ষণ করুন। স্ক্যান বাটনে ক্যামেরা/ছবি থেকে OCR নম্বর পড়বে।</p>
+                    <input id="scPlateTemplateInput" type="file" accept="image/*" class="w-full text-xs border rounded-xl p-2">
+                    <div id="scPlateTemplatePreview" class="min-h-10"></div>
+                    <div class="flex flex-wrap gap-2"><button id="scPlateTemplateSave" type="button" class="bg-indigo-700 text-white rounded-xl px-4 py-2 text-xs font-bold">নমুনা প্লেট সংরক্ষণ</button><button id="scPlateTemplateRemove" type="button" class="border border-rose-300 text-rose-700 rounded-xl px-4 py-2 text-xs font-bold">নমুনা মুছুন</button></div>
+                    <p class="text-[10px] text-amber-700">নোট: নমুনা ছবি সংরক্ষিত থাকবে; OCR স্ক্যান আলাদাভাবে নম্বর শনাক্ত করে পরিবারের রেকর্ডের সঙ্গে মিলিয়ে দেবে।</p>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -832,6 +849,7 @@
                         <button type="button" onclick="searchHouseForSub()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0">
                             খুঁজুন
                         </button>
+                         <button type="button" onclick="scOpenPlateScanner('subscription')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-xs font-bold shrink-0"><i class="fa-solid fa-camera mr-1"></i> স্ক্যান</button>
                     </div>
                 </div>
 
@@ -1914,7 +1932,8 @@
                     </div>
                 </div>
 
-                <div class="border-t pt-3 flex justify-between items-end text-[11px] text-slate-600">
+                <div class="flex justify-center py-2"><div style="border:3px solid #000;padding:5px;background:#fff;display:inline-block"><img alt="রশিদ যাচাই QR কোড" style="width:104px;height:104px;display:block" src="${scReceiptQrUrl(receiptObj)}"></div></div>
+                 <div class="border-t pt-3 flex justify-between items-end text-[11px] text-slate-600">
                     <div>
                         <p><strong>আদায়কারী:</strong> ${receiptObj.collectedBy}</p>
                         <p><strong>পদবী:</strong> ${receiptObj.collectedByRole}</p>
@@ -1955,7 +1974,8 @@
                         <p style="font-size: 15px; font-weight: bold; margin-top: 10px; border-top: 1px border #ccc; padding-top: 5px;">সর্বমোট পরিশোধিত চাঁদা: ${r.totalAmount} টাকা</p>
                     </div>
 
-                    <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div style="display:flex;justify-content:center;margin:12px 0"><div style="border:3px solid #000;padding:5px;background:#fff"><img alt="রশিদ QR" src="${scReceiptQrUrl(r)}" style="width:105px;height:105px;display:block"></div></div>
+                     <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="margin:0; font-size:11px;"><strong>আদায়কারী:</strong> ${r.collectedBy}</p>
                             <p style="margin:0; font-size:10px;">পদবী: ${r.collectedByRole}</p>
@@ -6053,7 +6073,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     'soc_users_v8','soc_monthly_fee_v8','soc_sub_payments_v8','soc_emergency_numbers_v1',
     'soc_skill_public_rules_v1','soc_activity_logs_v1','soc_admin_profile_v1',
     'soc_system_title_v1','soc_public_print_v1','soc_public_skill_categories_v1',
-    'soc_family_relations_v1','soc_print_settings_v1','soc_dark_mode_v1','soc_primary_admin_suspended_v1','soc_admin_id_history_v1'
+    'soc_family_relations_v1','soc_print_settings_v1','soc_dark_mode_v1','soc_primary_admin_suspended_v1','soc_admin_id_history_v1','soc_house_plate_template_v1'
   ];
   const KEY_SET = new Set(SYNC_KEYS);
   const RAW_KEYS = new Set(['soc_monthly_fee_v8','soc_system_title_v1','soc_dark_mode_v1']);
@@ -6065,7 +6085,8 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
   const nativeGet=Storage.prototype.getItem;
   // IMPORTANT: file:// and GitHub Pages use different localStorage origins.
   // Never perform first-visit cleanup here; it could erase valid Firebase data.
-  const setStatus=(state,msg)=>{if(statusBox)statusBox.dataset.state=state;if(statusText)statusText.textContent=msg;};
+  let statusHideTimer=null;
+   const setStatus=(state,msg)=>{if(statusBox){statusBox.dataset.state=state;statusBox.classList.remove('sc-hidden');}if(statusText)statusText.textContent=msg;clearTimeout(statusHideTimer);if(state==='online')statusHideTimer=setTimeout(()=>statusBox&&statusBox.classList.add('sc-hidden'),2600);};
   let dbRef=null,ready=false,applyingRemote=false,writeTimer=null,writeInProgress=false;
   let pendingWrites=new Set(),lastRemoteFingerprint='',initialSnapshotHandled=false,lastWriteFailed=false;
   function decode(key,raw){if(raw==null)return null;if(RAW_KEYS.has(key))return String(raw);try{return JSON.parse(raw);}catch(_){return raw;}}
@@ -6085,7 +6106,7 @@ html.community-dark main .border,html.community-dark main .border-slate-100,html
     try{
       // One atomic update prevents partial snapshots overwriting a newer family list.
       await dbRef.child('data').update(payload);
-      lastWriteFailed=false;setStatus('online','Firebase সিংক সম্পন্ন');if(window.scShowSuccess)window.scShowSuccess('Firebase সিংক সম্পন্ন','আপনার পরিবর্তন ক্লাউডে নিরাপদে সংরক্ষিত হয়েছে।');
+      lastWriteFailed=false;setStatus('online','Firebase সিংক সম্পন্ন');
     }catch(error){
       console.error('Firebase atomic update failed:',error);
       keys.forEach(k=>pendingWrites.add(k));
@@ -6388,6 +6409,106 @@ header nav{background:linear-gradient(90deg,#164e63,#134e4a,#312e81)!important}
  if(window.visualViewport){visualViewport.addEventListener('resize',updateViewport,{passive:true});visualViewport.addEventListener('scroll',updateViewport,{passive:true});}
 })();
 </script>
+
+
+<!-- SMART COMMUNITY REQUESTED FEATURES -->
+<style>
+#scPlateScanner{z-index:31000;background:#020617dd;backdrop-filter:blur(8px)}
+#scPlateScanner .sc-scan-panel{width:min(94vw,560px);max-height:92dvh;overflow:auto;background:#fff;border-radius:22px;padding:16px;box-shadow:0 25px 80px #0008}
+#scPlateVideo{width:100%;max-height:45vh;object-fit:cover;background:#0f172a;border-radius:14px}
+.sc-contact-pick{position:absolute;right:5px;top:50%;transform:translateY(-50%);z-index:4;border:0;border-radius:8px;background:#dbeafe;color:#1d4ed8;width:30px;height:30px;display:grid;place-items:center;cursor:pointer}
+.sc-contact-host{position:relative!important}
+.sc-backup-card{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:18px;padding:16px}
+</style>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=v=>String(v||'').replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d)).toUpperCase();
+const clean=v=>norm(v).replace(/[^A-Z0-9]/g,'');
+window.scReceiptQrUrl=function(r){
+ const text=['SMART COMMUNITY HUB - CHANDA RECEIPT','Receipt No: '+(r.receiptNo||''),'House No: '+(r.houseNo||''),'Family Head: '+(r.headName||''),'Occupation: '+(r.headOccupation||''),'Paid Months: '+((r.paidMonthsLabels||[]).join(', ')),'Total Paid: '+(r.totalAmount||0)+' BDT','Collected By: '+(r.collectedBy||''),'Designation: '+(r.collectedByRole||''),'Date: '+(r.dateStr||'')+' '+(r.timeStr||'')].join('\n');
+ return 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data='+encodeURIComponent(text);
+};
+
+// Backup and recovery panel.
+function addBackupPanel(){
+ const host=$('scAdminToolsHost')||$('sec-rbac');if(!host)return;
+ const c=$('scBackupPanel');if(!c)return;
+ const now=$('scBackupNow'),restore=$('scRestoreFile'),save=$('scSaveSchedule'),exportBtn=$('scExportScheduled');
+ if(now&&!now.dataset.bound){now.dataset.bound='1';now.onclick=()=>scBackup(true);}
+ if(restore&&!restore.dataset.bound){restore.dataset.bound='1';restore.onchange=e=>{scRestore(e.target.files?.[0]);e.target.value='';};}
+ if(save&&!save.dataset.bound){save.dataset.bound='1';save.onclick=scSaveSchedule;}
+ if(exportBtn&&!exportBtn.dataset.bound){exportBtn.dataset.bound='1';exportBtn.onclick=scExportLatest;}
+ const cfg=JSON.parse(localStorage.getItem('soc_backup_schedule_v1')||'{}');if(cfg.enabled){$('scBackupInterval').value=cfg.interval||'daily';$('scBackupTime').value=cfg.time||'23:00';}
+ showSchedule();startSchedule();
+}
+const DB='smart-community-backup-v1',STORE='snapshots';
+function openDB(){return new Promise((res,rej)=>{let q=indexedDB.open(DB,1);q.onupgradeneeded=()=>q.result.createObjectStore(STORE,{keyPath:'id'});q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error);});}
+async function saveSnapshot(v){let d=await openDB();return new Promise((res,rej)=>{let t=d.transaction(STORE,'readwrite');t.objectStore(STORE).put(v);t.oncomplete=()=>{d.close();res()};t.onerror=()=>rej(t.error);});}
+async function latestSnapshot(){let d=await openDB();return new Promise((res,rej)=>{let q=d.transaction(STORE).objectStore(STORE).getAll();q.onsuccess=()=>{d.close();res((q.result||[]).sort((a,b)=>b.createdAt-a.createdAt)[0]||null)};q.onerror=()=>rej(q.error);});}
+function localData(){let o={};for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k?.startsWith('soc_'))o[k]=localStorage.getItem(k);}return o;}
+async function backupPayload(){let cloud=null;try{if(window.firebase?.apps?.length)cloud=(await firebase.database().ref('smartCommunity/state/data').once('value')).val()||null;}catch(e){console.warn(e)}return {app:'SMART COMMUNITY HUB',backupVersion:1,createdAt:Date.now(),createdAtText:new Date().toLocaleString('bn-BD'),localStorage:localData(),firebaseData:cloud};}
+function download(o,n){let b=new Blob([JSON.stringify(o,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);}
+window.scBackup=async function(exportFile=false){try{let p=await backupPayload();await saveSnapshot({id:String(p.createdAt),createdAt:p.createdAt,payload:p});localStorage.setItem('soc_backup_last_run_v1',String(p.createdAt));if(exportFile)download(p,'smart-community-backup-'+new Date(p.createdAt).toISOString().replace(/[:.]/g,'-')+'.json');showSchedule();if(window.showToast)showToast('সম্পূর্ণ ব্যাকআপ তৈরি হয়েছে');return p;}catch(e){alert('ব্যাকআপ তৈরি করা যায়নি: '+e.message)}};
+window.scRestore=async function(file){if(!file)return;if(!confirm('ব্যাকআপের ডেটা দিয়ে বর্তমান সফটওয়্যারের ডেটা প্রতিস্থাপন করবেন?'))return;try{let p=JSON.parse(await file.text());if(p.app!=='SMART COMMUNITY HUB'||!p.localStorage)throw Error('সঠিক ব্যাকআপ ফাইল নয়');Object.keys(localStorage).filter(k=>k.startsWith('soc_')).forEach(k=>localStorage.removeItem(k));Object.entries(p.localStorage).forEach(([k,v])=>{if(k.startsWith('soc_'))localStorage.setItem(k,String(v));});if(p.firebaseData&&window.firebase?.apps?.length)await firebase.database().ref('smartCommunity/state/data').update(p.firebaseData);alert('রিকভারি সম্পন্ন। সফটওয়্যার পুনরায় চালু হচ্ছে।');location.reload();}catch(e){alert('রিকভারি ব্যর্থ: '+e.message)}};
+function showSchedule(){let e=$('scBackupScheduleStatus');if(!e)return;let c=JSON.parse(localStorage.getItem('soc_backup_schedule_v1')||'{}'),last=+(localStorage.getItem('soc_backup_last_run_v1')||0);e.textContent=c.enabled?`সক্রিয়: ${c.interval==='daily'?'প্রতিদিন':c.interval==='weekly'?'প্রতি সপ্তাহে':'প্রতি মাসে'} ${c.time||'23:00'} — ব্রাউজার চালু থাকলে ব্যাকআপ হবে।`:'শিডিউল বন্ধ রয়েছে।';$('scBackupLastRun').textContent=last?'সর্বশেষ: '+new Date(last).toLocaleString('bn-BD'):'এখনও ব্যাকআপ হয়নি';}
+function scSaveSchedule(){localStorage.setItem('soc_backup_schedule_v1',JSON.stringify({enabled:true,interval:$('scBackupInterval').value,time:$('scBackupTime').value||'23:00'}));showSchedule();startSchedule();if(window.showToast)showToast('ব্যাকআপ শিডিউল সংরক্ষিত হয়েছে');}
+let scheduler=null;function startSchedule(){clearInterval(scheduler);scheduler=setInterval(async()=>{let c=JSON.parse(localStorage.getItem('soc_backup_schedule_v1')||'{}');if(!c.enabled)return;let n=new Date(),[h,m]=(c.time||'23:00').split(':').map(Number),last=+(localStorage.getItem('soc_backup_last_run_v1')||0),delta=n-last,day=86400000;if(n.getHours()!==h||n.getMinutes()!==m)return;let due=!last||(c.interval==='daily'&&delta>=day)||(c.interval==='weekly'&&delta>=7*day)||(c.interval==='monthly'&&delta>=27*day);if(due)await window.scBackup(false);},30000);}
+async function scExportLatest(){try{let v=await latestSnapshot();if(!v)return alert('শিডিউল ব্যাকআপ পাওয়া যায়নি');download(v.payload,'smart-community-scheduled-backup.json')}catch(e){alert(e.message)}}
+
+// House plate OCR scanner.
+let stream=null,target='family';
+function scannerUI(){if($('scPlateScanner'))return;let m=document.createElement('div');m.id='scPlateScanner';m.className='fixed inset-0 hidden items-center justify-center p-3';m.innerHTML=`<div class="sc-scan-panel space-y-3"><div class="flex justify-between"><b>ঘরের নম্বর প্লেট স্ক্যান</b><button id="scScanClose" class="text-xl">×</button></div><p class="text-xs text-slate-500">প্লেটটি পরিষ্কারভাবে ক্যামেরায় ধরুন। ছবি থেকে ঘর নম্বর শনাক্ত হবে।</p><video id="scPlateVideo" autoplay playsinline muted></video><canvas id="scPlateCanvas" class="hidden"></canvas><div class="flex gap-2"><button id="scCapture" class="flex-1 bg-indigo-700 text-white rounded-xl p-3 text-xs font-bold">ছবি তুলে স্ক্যান</button><label class="flex-1 text-center bg-slate-100 rounded-xl p-3 text-xs font-bold">ছবি আপলোড<input id="scPlateImage" type="file" accept="image/*" capture="environment" class="hidden"></label></div><p id="scOCRStatus" class="text-xs bg-slate-50 rounded-lg p-2">ক্যামেরা চালু হচ্ছে...</p><div id="scOCRResult" class="hidden bg-emerald-50 p-3 rounded-xl"></div></div>`;document.body.appendChild(m);$('scScanClose').onclick=closeScanner;$('scCapture').onclick=capture;$('scPlateImage').onchange=e=>{if(e.target.files?.[0])ocr(e.target.files[0])};m.onclick=e=>{if(e.target===m)closeScanner();};}
+window.scOpenPlateScanner=async function(t){target=t;scannerUI();$('scPlateScanner').classList.remove('hidden');$('scPlateScanner').classList.add('flex');try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});$('scPlateVideo').srcObject=stream;$('scOCRStatus').textContent='ক্যামেরা প্রস্তুত। ছবি তুলুন।'}catch(e){$('scOCRStatus').textContent='ক্যামেরা অনুমতি/সাপোর্ট নেই। ছবি আপলোড করে স্ক্যান করুন।'}};
+function closeScanner(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}if($('scPlateScanner')){$('scPlateScanner').classList.add('hidden');$('scPlateScanner').classList.remove('flex');}}
+async function capture(){let v=$('scPlateVideo');if(!v.videoWidth)return alert('ক্যামেরা প্রস্তুত নয়');let c=$('scPlateCanvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);c.toBlob(b=>b&&ocr(b),'image/jpeg',.92);}
+async function ocr(file){$('scOCRStatus').textContent='ছবি বিশ্লেষণ হচ্ছে...';try{if(!window.Tesseract)await new Promise((ok,no)=>{let x=document.createElement('script');x.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';x.onload=ok;x.onerror=()=>no(Error('OCR লাইব্রেরি লোড হয়নি'));document.head.appendChild(x)});let r=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text')$('scOCRStatus').textContent='শনাক্ত হচ্ছে '+Math.round((m.progress||0)*100)+'%'}}),raw=norm(r.data.text),hits=raw.match(/\d+/g)||[],house=hits.sort((a,b)=>b.length-a.length)[0]||'';if(!house){$('scOCRStatus').textContent='নম্বর শনাক্ত হয়নি। আলো বাড়িয়ে আবার চেষ্টা করুন।';return;}$('scOCRStatus').textContent='শনাক্তকৃত ঘর নম্বর: '+house;$('scOCRResult').classList.remove('hidden');$('scOCRResult').innerHTML=`<b class="text-emerald-800">ঘর নম্বর: ${esc(house)}</b><button id="scUseHouse" class="block w-full mt-2 bg-emerald-700 text-white rounded-lg p-2 text-xs font-bold">এই নম্বর দিয়ে খুঁজুন</button>`;$('scUseHouse').onclick=()=>{closeScanner();let fam=(typeof families!=='undefined'?families:[]).find(x=>String(x.houseNo||'').replace(/\D/g,'')===house);if(target==='family'){if(!fam){alert('এই নম্বরের পরিবার পাওয়া যায়নি।');return;}$('familySearch').value=fam.houseNo;renderFamilies();[...document.querySelectorAll('#familiesGrid>div')].find(x=>x.textContent.includes(fam.houseNo))?.scrollIntoView({behavior:'smooth',block:'center'});}else{if(!fam){alert('এই নম্বরের পরিবারের চাঁদার হিসাব পাওয়া যায়নি।');return;}$('subHouseNoInput').value=fam.houseNo;searchHouseForSub();}};}catch(e){$('scOCRStatus').textContent='স্ক্যান ব্যর্থ: '+e.message;}}
+function addPlateTemplate(){
+ const c=$('scPlateTemplateCard');if(!c)return;
+ const preview=$('scPlateTemplatePreview'),input=$('scPlateTemplateInput'),save=$('scPlateTemplateSave'),remove=$('scPlateTemplateRemove');
+ const old=localStorage.getItem('soc_house_plate_template_v1');
+ if(old&&preview&&!preview.dataset.loaded){preview.innerHTML=`<div class="text-[11px] font-bold text-emerald-700 mb-1">সংরক্ষিত নমুনা প্লেট</div><img src="${old}" alt="সংরক্ষিত নম্বর প্লেট" class="max-h-36 max-w-full rounded-lg border object-contain">`;preview.dataset.loaded='1';}
+ if(save&&!save.dataset.bound){save.dataset.bound='1';save.onclick=()=>{const f=input?.files?.[0];if(!f)return alert('প্রথমে নম্বর প্লেটের ছবি নির্বাচন করুন');if(!/^image\//.test(f.type))return alert('শুধু ছবির ফাইল নির্বাচন করুন');if(f.size>1500000)return alert('ছবি ১.৫ MB-এর মধ্যে রাখুন');const r=new FileReader();r.onload=()=>{try{localStorage.setItem('soc_house_plate_template_v1',r.result);if(preview){preview.innerHTML=`<div class="text-[11px] font-bold text-emerald-700 mb-1">সংরক্ষিত নমুনা প্লেট</div><img src="${r.result}" alt="নম্বর প্লেট" class="max-h-36 max-w-full rounded-lg border object-contain">`;preview.dataset.loaded='1';}if(window.showToast)showToast('ঘরের নম্বর প্লেটের নমুনা সংরক্ষিত হয়েছে');else alert('নমুনা ছবি সংরক্ষিত হয়েছে');}catch(e){alert('ছবি সংরক্ষণ হয়নি: '+e.message)}};r.readAsDataURL(f);};}
+ if(remove&&!remove.dataset.bound){remove.dataset.bound='1';remove.onclick=()=>{if(!confirm('সংরক্ষিত নমুনা প্লেট মুছে ফেলবেন?'))return;localStorage.removeItem('soc_house_plate_template_v1');if(preview){preview.innerHTML='';preview.dataset.loaded='';}if(input)input.value='';if(window.showToast)showToast('নমুনা ছবি মুছে ফেলা হয়েছে');};}
+}
+
+// Device contact picker (supported browsers only; graceful fallback).
+async function pickContact(input){try{if(!navigator.contacts?.select)throw Error('এই ব্রাউজারে কন্টাক্ট পিকার নেই। Android Chrome-এ চেষ্টা করুন।');let a=await navigator.contacts.select(['name','tel'],{multiple:false});if(a?.[0]?.tel?.[0]){input.value=a[0].tel[0];input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));}}catch(e){if(e.name!=='AbortError')alert(e.message)}}
+function addContactButtons(root=document){root.querySelectorAll('input').forEach(i=>{let sig=(i.id+' '+i.name+' '+i.placeholder).toLowerCase();if(i.dataset.scContact||i.type==='hidden'||!(i.type==='tel'||/(mobile|phone|মোবাইল|ফোন|যোগাযোগ|contact)/i.test(sig)))return;i.dataset.scContact='1';let p=i.parentElement;if(!p)return;p.classList.add('sc-contact-host');i.style.paddingRight='42px';let b=document.createElement('button');b.type='button';b.className='sc-contact-pick';b.title='ডিভাইসের কন্টাক্ট থেকে নম্বর নিন';b.innerHTML='<i class="fa fa-address-book"></i>';b.onclick=()=>pickContact(i);p.appendChild(b);});}
+
+// Replace gender labels in rendered content with colored icon + label.
+function genderIcons(root=document.body){let w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){if(!/(পুরুষ|মহিলা|নারী)/.test(n.nodeValue||''))return NodeFilter.FILTER_REJECT;let p=n.parentElement;if(!p||p.closest('script,style,input,textarea,select,option,.sc-gender-icons'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT}}),a=[];while(w.nextNode())a.push(w.currentNode);a.forEach(n=>{let f=document.createDocumentFragment();n.nodeValue.split(/(পুরুষ|মহিলা|নারী)/g).forEach(t=>{if(t==='পুরুষ'||t==='মহিলা'||t==='নারী'){let x=document.createElement('span');x.className='sc-gender-icons';x.innerHTML=t==='পুরুষ'?'<i class="fa-solid fa-person text-blue-600"></i> <span>পুরুষ</span>':'<i class="fa-solid fa-person-dress text-pink-600"></i> <span>'+t+'</span>';f.appendChild(x)}else f.appendChild(document.createTextNode(t))});n.parentNode?.replaceChild(f,n)});}
+function init(){addBackupPanel();addPlateTemplate();addContactButtons();genderIcons();new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){addContactButtons(n);genderIcons(n)}}))).observe(document.body,{childList:true,subtree:true});}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+<!-- FINAL RECEIPT QR + ADMIN TOOLS WIRING -->
+<script>
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function qrBlock(r){const url=window.scReceiptQrUrl?window.scReceiptQrUrl(r):'';if(!url)return '';return `<div class="sc-receipt-qr" style="display:flex;align-items:center;justify-content:center;gap:12px;border-top:1px dashed #64748b;margin-top:14px;padding-top:10px"><img src="${url}" alt="রশিদ যাচাই QR কোড" style="width:104px;height:104px;object-fit:contain;border:3px solid #111;padding:3px;background:#fff"><div style="font-size:10px;line-height:1.5;text-align:left"><b>রশিদ যাচাই</b><br>QR কোড স্ক্যান করে রশিদের তথ্য দেখুন<br><span style="color:#475569">রশিদ নং: ${esc(r.receiptNo||'—')}</span></div></div>`;}
+ function addPreviewQr(r){const content=$('singleReceiptContent');if(!content||!r)return;content.querySelectorAll('.sc-receipt-qr').forEach(x=>x.remove());content.insertAdjacentHTML('beforeend',qrBlock(r));}
+ const oldOpen=window.openSingleReceiptViewModal;
+ if(typeof oldOpen==='function'&&!oldOpen.__qrFinal){const wrapped=function(r){const out=oldOpen.apply(this,arguments);window.currentViewingReceipt=r;setTimeout(()=>addPreviewQr(r),0);setTimeout(()=>addPreviewQr(r),80);return out;};wrapped.__qrFinal=true;window.openSingleReceiptViewModal=wrapped;}
+ window.printCurrentReceipt=function(){
+   const r=window.currentViewingReceipt||window.currentViewingReceipt;if(!r)return alert('রশিদের তথ্য পাওয়া যায়নি।');
+   const fam=(typeof families!=='undefined'?families:[]).find(f=>String(f.houseNo||'').toLowerCase()===String(r.houseNo||'').toLowerCase())||{};
+   const sig=r.collectorSignature||((typeof currentUser!=='undefined'&&currentUser?.signature)||'');
+   const cfg=JSON.parse(localStorage.getItem('soc_print_settings_v1')||'{"format":"A4","width":80}');
+   const qr=qrBlock(r);
+   const box=$('printAreaTable');if(!box)return alert('প্রিন্ট এরিয়া পাওয়া যায়নি।');
+   box.innerHTML=`<div style="font-family:Arial,sans-serif;color:#111;width:100%;max-width:${cfg.format==='POS'?Math.max(30,Number(cfg.width||80)-5)+'mm':'420px'};margin:0 auto;border:1px solid #111;padding:12px;box-sizing:border-box;font-size:11px;background:#fff"><header style="text-align:center;border-bottom:1px solid #111;padding-bottom:8px;margin-bottom:8px"><h2 style="font-size:17px;margin:0">${esc(typeof systemTitle!=='undefined'?systemTitle:'স্মার্ট কমিউনিটি')}</h2><b>মাসিক চাঁদা আদায়ের রশিদ</b><p style="margin:3px 0">রশিদ নং: ${esc(r.receiptNo||'—')}</p></header><p><b>ঘর নম্বর:</b> ${esc(r.houseNo||fam.houseNo||'—')}</p><p><b>কর্তার নাম:</b> ${esc(r.headName||fam.headName||'—')}</p><p><b>পেশা:</b> ${esc(r.headOccupation||fam.headOccupation||'—')}</p><p><b>মোবাইল:</b> ${esc(r.headMobile||fam.headMobile||'—')}</p><div style="border-top:1px dashed #333;border-bottom:1px dashed #333;padding:7px 0;margin:7px 0"><b>আদায়কৃত মাসের হিসাব</b><p style="margin:5px 0">${(r.paidMonthsLabels||[]).map(esc).join(', ')||'—'}</p><div style="display:flex;justify-content:space-between;font-weight:bold"><span>সর্বমোট আদায়:</span><span>${esc(r.totalAmount||0)} টাকা</span></div></div><p><b>আদায়ের তারিখ:</b> ${esc(r.dateStr||r.dateISO||'—')} &nbsp; <b>সময়:</b> ${esc(r.timeStr||'—')}</p><div style="display:flex;justify-content:space-between;align-items:end;margin-top:14px"><div><b>আদায়কারী:</b> ${esc(r.collectedBy||'—')}<br><b>পদবী:</b> ${esc(r.collectedByRole||'—')}</div><div style="text-align:center;min-width:95px">${sig?`<img src="${sig}" style="max-width:95px;max-height:38px;object-fit:contain;display:block;margin:auto">`:'<div style="border-bottom:1px solid #111;height:30px"></div>'}<small>আদায়কারীর স্বাক্ষর</small></div></div>${qr}<p style="text-align:center;border-top:1px solid #aaa;padding-top:5px;margin-top:8px;font-size:9px">এই রশিদ সফটওয়্যার দ্বারা তৈরি করা হয়েছে।</p></div>`;
+   let st=$('scFinalReceiptPrintStyle');if(!st){st=document.createElement('style');st.id='scFinalReceiptPrintStyle';document.head.appendChild(st);}st.textContent='@media print{@page{size:'+(cfg.format==='POS'?Math.max(30,Number(cfg.width||80))+'mm auto':'A4 portrait')+';margin:8mm}body *{visibility:hidden!important}#printAreaTable,#printAreaTable *{visibility:visible!important}#printAreaTable{display:block!important;position:absolute!important;left:0;top:0;width:100%!important;background:#fff!important}#printAreaTable .sc-receipt-qr{break-inside:avoid}}';
+   window.print();
+ };
+ function bindAdmin(){addBackupPanel();addPlateTemplate();}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindAdmin);else bindAdmin();
+})();
+</script>
+<!-- END SMART COMMUNITY REQUESTED FEATURES -->
 
 </body>
 </html>
