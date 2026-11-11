@@ -905,6 +905,7 @@
                         <button type="button" onclick="searchHouseReceipts()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold shrink-0">
                             রশিদ খুঁজুন
                         </button>
+                        <button type="button" onclick="scOpenPlateScanner('receipts')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-xs font-bold shrink-0"><i class="fa-solid fa-qrcode mr-1"></i> স্ক্যান</button>
                     </div>
                 </div>
 
@@ -1631,7 +1632,8 @@
                             <div class="flex items-center gap-1 text-xs font-bold">
                                 <a href="tel:${f.headMobile}" class="flex-1 py-1.5 bg-slate-900 text-white rounded-lg text-center"><i class="fa-solid fa-phone text-emerald-400"></i> কল</a>
                                 <a href="https://wa.me/88${f.headMobile}" target="_blank" class="flex-1 py-1.5 bg-emerald-600 text-white rounded-lg text-center"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ</a>
-                                <button onclick="shareFullFamily(${idx})" class="p-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg shrink-0"><i class="fa-solid fa-share-nodes"></i></button>
+                                <button type="button" onclick="sendFamilyDueWhatsApp(${families.indexOf(f)})" class="flex-1 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-center"><i class="fa-solid fa-comment-sms"></i> SMS</button>
+                                <button onclick="shareFullFamily(${families.indexOf(f)})" class="p-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg shrink-0" title="PDF শেয়ার"><i class="fa-solid fa-file-pdf"></i></button>
                             </div>
 
                             <div class="flex items-center justify-between text-xs pt-1">
@@ -2027,6 +2029,7 @@
                                     <span class="text-xs text-slate-500 block">বকেয়া টাকা</span>
                                     <span class="text-lg font-black text-rose-600 block">${dueAmount} টাকা</span>
                                 </div>
+                                <button type="button" onclick="sendFamilyDueWhatsApp(${families.indexOf(f)})" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm"><i class="fa-solid fa-comment-sms mr-1"></i> SMS</button>
                                 <button onclick="collectSubscriptionFromFamilyModal('${f.houseNo}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm">
                                     আদায়
                                 </button>
@@ -6480,6 +6483,9 @@ function handleFamilyQR(raw){
  closeScanner();
  if(target==='family'){
   const idx=list.indexOf(fam);viewFamilyDetail(idx);
+ }else if(target==='receipts'){
+  $('receiptHouseNoInput').value=fam.houseNo;
+  searchHouseReceipts();
  }else{
   $('subHouseNoInput').value=fam.houseNo;
   searchHouseForSub();
@@ -6529,7 +6535,7 @@ async function ocr(file){
   let r=await Tesseract.recognize(file,'eng',{logger:m=>{if(m.status==='recognizing text')$('scOCRStatus').textContent='নম্বর শনাক্ত হচ্ছে '+Math.round((m.progress||0)*100)+'%'}}),rawText=norm(r.data.text),hits=rawText.match(/\d+/g)||[],house=hits.sort((a,b)=>b.length-a.length)[0]||'';
   if(!house){$('scOCRStatus').textContent='নম্বর শনাক্ত হয়নি। আলো বাড়িয়ে আবার চেষ্টা করুন।';return;}
   $('scOCRStatus').textContent='শনাক্তকৃত ঘর নম্বর: '+house;$('scOCRResult').classList.remove('hidden');$('scOCRResult').innerHTML=`<b class="text-emerald-800">ঘর নম্বর: ${esc(house)}</b><button id="scUseHouse" class="block w-full mt-2 bg-emerald-700 text-white rounded-lg p-2 text-xs font-bold">এই নম্বর দিয়ে খুঁজুন</button>`;
-  $('scUseHouse').onclick=()=>{let fam=(typeof families!=='undefined'?families:[]).find(x=>houseDigits(x.houseNo)===houseDigits(house));closeScanner();if(!fam){alert('এই নম্বরের পরিবার পাওয়া যায়নি।');return;}if(target==='family'){viewFamilyDetail(families.indexOf(fam));}else{$('subHouseNoInput').value=fam.houseNo;searchHouseForSub();}};
+  $('scUseHouse').onclick=()=>{let fam=(typeof families!=='undefined'?families:[]).find(x=>houseDigits(x.houseNo)===houseDigits(house));closeScanner();if(!fam){alert('এই নম্বরের পরিবার পাওয়া যায়নি।');return;}if(target==='family'){viewFamilyDetail(families.indexOf(fam));}else if(target==='receipts'){$('receiptHouseNoInput').value=fam.houseNo;searchHouseReceipts();}else{$('subHouseNoInput').value=fam.houseNo;searchHouseForSub();}};
  }catch(e){$('scOCRStatus').textContent='স্ক্যান ব্যর্থ: '+e.message;}
 }
 function addPlateTemplate(){
@@ -6683,6 +6689,114 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  }
 })();
 </script>
+
+
+<!-- SMART COMMUNITY NOV 12: PDF SHARE, DUE REMINDERS, DEVICE SESSION + OFFLINE CACHE -->
+<style id="sc-nov12-enhancements">
+  .sc-auth-input-wrap input{text-align:center!important;padding-left:42px!important;padding-right:42px!important}
+  #scDeviceCacheNotice{position:fixed;inset:0;z-index:50000;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.72);backdrop-filter:blur(5px);padding:18px}
+  #scDeviceCacheNotice .sc-cache-panel{width:min(92vw,430px);background:#fff;border-radius:22px;padding:22px;box-shadow:0 24px 70px #0004;text-align:center}
+  #scDeviceCacheNotice .sc-cache-track{height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:14px 0}
+  #scDeviceCacheNotice .sc-cache-fill{height:100%;width:0;background:linear-gradient(90deg,#0ea5e9,#10b981);border-radius:99px;transition:width .25s}
+</style>
+<script>
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const bn=n=>Number(n||0).toLocaleString('bn-BD');
+ function getFamily(idx){return (typeof families!=='undefined'?families:[])[Number(idx)]||null;}
+ function dueData(f){try{return calculateHouseDue(f)}catch(e){return {dueMonths:[],dueAmount:0}}}
+ function phoneForWA(v){let n=String(v||'').replace(/\D/g,'');if(n.startsWith('0'))n='88'+n.slice(1);else if(n.length===10)n='880'+n;return n;}
+ function launchWA(phone,msg){const n=phoneForWA(phone);if(!n){alert('পরিবারের কর্তার সঠিক মোবাইল নম্বর পাওয়া যায়নি।');return;}const url='https://wa.me/'+n+'?text='+encodeURIComponent(msg);window.open(url,'_blank','noopener');}
+ window.sendFamilyDueWhatsApp=function(idx){
+   const f=getFamily(idx);if(!f)return alert('পরিবারের তথ্য পাওয়া যায়নি।');
+   const d=dueData(f);if(!d.dueMonths.length){alert('এই পরিবারের কোনো বকেয়া চাঁদা নেই।');return;}
+   const months=d.dueMonths.map((m,i)=>`  ${i+1}. ${m.label}`).join('\n');
+   const title=(typeof systemTitle!=='undefined'&&systemTitle)||'স্মার্ট সোসাইটি হাব';
+   const msg=`🌸 *সম্মানিত ${f.headName||'পরিবার প্রধান'}*\n\nআসসালামু আলাইকুম।\n🏠 ঘর নম্বর: *${f.houseNo}*\n👤 পরিবারের কর্তা: ${f.headName||'—'}\n\n📌 *আপনার বকেয়া মাসিক চাঁদার বিবরণ:*\n${months}\n\n📅 মোট বকেয়া মাস: *${bn(d.dueMonths.length)} মাস*\n💰 প্রতি মাসের চাঁদা: *${bn(typeof monthlyFeeRate!=='undefined'?monthlyFeeRate:0)} টাকা*\n🧾 *সর্বমোট বকেয়া: ${bn(d.dueAmount)} টাকা*\n\nসমিতির কার্যক্রম সুষ্ঠুভাবে পরিচালনার স্বার্থে অনুগ্রহ করে সুবিধাজনক সময়ে বকেয়া চাঁদা পরিশোধ করার জন্য বিনীত অনুরোধ রইল।\n\nধন্যবাদান্তে,\n${title}\n🤝 আন্তরিক শুভেচ্ছা।`;
+   launchWA(f.headMobile,msg);
+ };
+ // Full dynamic family profile PDF. Share sheet is used when supported; otherwise the PDF downloads.
+ function familyPdfMarkup(f){
+   const d=dueData(f), payments=(typeof subscriptionPayments!=='undefined'?subscriptionPayments:[]).filter(p=>String(p.houseNo||'').toUpperCase()===String(f.houseNo||'').toUpperCase());
+   const fields=[['ঘর নম্বর',f.houseNo],['পরিবার প্রধান',f.headName],['মোবাইল',f.headMobile],['লিঙ্গ',f.headGender],['রক্তের গ্রুপ',f.headBlood],['পেশা / স্কিল',f.headOccupation],['চাঁদা শুরুর মাস',f.subStartMonth],['ঠিকানা',f.address],['জাতীয় পরিচয় / অন্যান্য তথ্য',f.nid||f.otherInfo]];
+   const fieldRows=fields.filter(x=>x[1]!==undefined&&x[1]!==null&&String(x[1]).trim()!=='').map(x=>`<tr><th>${esc(x[0])}</th><td>${esc(x[1])}</td></tr>`).join('');
+   const members=(f.members||[]).map((m,i)=>`<tr><td>${i+1}</td><td>${esc(m.name||'—')}</td><td>${esc(m.relation||'—')}</td><td>${esc(m.gender||'—')}</td><td>${esc(m.blood||'—')}</td><td>${esc(m.occupation||'—')}</td></tr>`).join('');
+   const paid=payments.reduce((a,p)=>a+(Number(p.totalAmount)||0),0);
+   const extra=Object.entries(f).filter(([k,v])=>!['houseNo','headName','headMobile','headGender','headBlood','headOccupation','subStartMonth','headPhoto','members','address','nid','otherInfo'].includes(k)&&v!==null&&v!==''&&typeof v!=='object').map(([k,v])=>`<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('');
+   const org=esc((typeof systemTitle!=='undefined'&&systemTitle)||'স্মার্ট সোসাইটি হাব');
+   return `<div id="scFamilyPdfDocument" style="width:190mm;padding:10mm;background:#fff;color:#172033;font-family:'Hind Siliguri',Arial,sans-serif;box-sizing:border-box;font-size:11px;line-height:1.6"><header style="text-align:center;border-bottom:2px solid #0f766e;padding-bottom:8px;margin-bottom:12px"><h1 style="font-size:22px;font-weight:900;margin:0;color:#065f46">${org}</h1><h2 style="font-size:16px;font-weight:800;margin:3px 0">পরিবারের পূর্ণাঙ্গ প্রোফাইল</h2><p style="margin:0;color:#64748b">প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}</p></header><section style="display:flex;gap:14px;align-items:center;margin-bottom:12px;padding:10px;border:1px solid #cbd5e1;border-radius:10px"><img src="${esc(f.headPhoto||'')}" style="width:30mm;height:34mm;object-fit:cover;border-radius:8px;border:1px solid #cbd5e1" onerror="this.style.display='none'"><div><div style="font-size:18px;font-weight:900">${esc(f.headName||'—')}</div><div style="font-size:13px;font-weight:800;color:#0f766e">ঘর নম্বর: ${esc(f.houseNo||'—')}</div><div>মোবাইল: ${esc(f.headMobile||'—')}</div><div>পেশা: ${esc(f.headOccupation||'—')}</div></div></section><h3 style="font-size:14px;font-weight:900;margin:10px 0 5px">পরিবার প্রধানের তথ্য</h3><table style="width:100%;border-collapse:collapse">${fieldRows}${extra}</table><h3 style="font-size:14px;font-weight:900;margin:14px 0 5px">পরিবারের সদস্য তালিকা (${(f.members||[]).length} জন)</h3><table style="width:100%;border-collapse:collapse"><thead><tr><th>ক্রম</th><th>নাম</th><th>সম্পর্ক</th><th>লিঙ্গ</th><th>রক্ত</th><th>পেশা</th></tr></thead><tbody>${members||'<tr><td colspan="6">অতিরিক্ত সদস্যের তথ্য নেই</td></tr>'}</tbody></table><h3 style="font-size:14px;font-weight:900;margin:14px 0 5px">মাসিক চাঁদার সারসংক্ষেপ</h3><div style="border:1px solid #cbd5e1;border-radius:8px;padding:9px"><p>বকেয়া মাস: <b>${bn(d.dueMonths.length)}টি</b></p><p>বকেয়া মাসসমূহ: <b>${d.dueMonths.map(m=>esc(m.label)).join(', ')||'নেই'}</b></p><p>মোট বকেয়া: <b style="color:#be123c">${bn(d.dueAmount)} টাকা</b></p><p>পূর্বের রশিদ: <b>${bn(payments.length)}টি</b> · পূর্বে মোট আদায়: <b>${bn(paid)} টাকা</b></p></div><h3 style="font-size:14px;font-weight:900;margin:14px 0 5px">আদায়ের রশিদসমূহ</h3><table style="width:100%;border-collapse:collapse"><thead><tr><th>রশিদ</th><th>তারিখ</th><th>পরিশোধিত মাস</th><th>টাকা</th></tr></thead><tbody>${payments.map(p=>`<tr><td>${esc(p.receiptNo||'—')}</td><td>${esc(p.dateStr||p.dateISO||'—')}</td><td>${esc((p.paidMonthsLabels||[]).join(', '))}</td><td>${bn(p.totalAmount)} টাকা</td></tr>`).join('')||'<tr><td colspan="4">কোনো রশিদ পাওয়া যায়নি</td></tr>'}</tbody></table><footer style="margin-top:16px;padding-top:8px;border-top:1px solid #cbd5e1;text-align:center;color:#64748b;font-size:9px">এই প্রোফাইলটি ${org} সফটওয়্যার থেকে স্বয়ংক্রিয়ভাবে তৈরি করা হয়েছে।</footer></div>`;
+ }
+ async function loadPdfLibraries(){
+   if(!window.html2canvas)await new Promise((ok,no)=>{const x=document.createElement('script');x.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';x.onload=ok;x.onerror=()=>no(Error('PDF তৈরির ইমেজ লাইব্রেরি লোড হয়নি'));document.head.appendChild(x)});
+   if(!(window.jspdf&&window.jspdf.jsPDF))await new Promise((ok,no)=>{const x=document.createElement('script');x.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';x.onload=ok;x.onerror=()=>no(Error('PDF লাইব্রেরি লোড হয়নি'));document.head.appendChild(x)});
+ }
+ window.shareFullFamily=async function(idx){
+   const f=getFamily(idx);if(!f)return alert('পরিবারের তথ্য পাওয়া যায়নি।');
+   let host=document.getElementById('scFamilyPdfHost');if(!host){host=document.createElement('div');host.id='scFamilyPdfHost';host.style.cssText='position:fixed;left:-10000px;top:0;z-index:-1;background:#fff';document.body.appendChild(host);}
+   try{
+     if(window.showToast)showToast('📄 পরিবারের পূর্ণাঙ্গ PDF তৈরি হচ্ছে...');
+     await loadPdfLibraries();host.innerHTML=familyPdfMarkup(f);
+     const imgs=[...host.querySelectorAll('img')];await Promise.all(imgs.map(im=>im.complete?Promise.resolve():new Promise(r=>{im.onload=r;im.onerror=r})));
+     const node=host.firstElementChild,canvas=await html2canvas(node,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false});
+     const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'p',unit:'mm',format:'a4',compress:true});
+     const pageW=190,pageH=277,imgW=pageW,imgH=canvas.height*imgW/canvas.width,data=canvas.toDataURL('image/jpeg',.92);
+     let y=0,remaining=imgH;while(remaining>0){if(y>0)pdf.addPage();pdf.addImage(data,'JPEG',10,10-y,imgW,imgH,undefined,'FAST');remaining-=pageH;y+=pageH;}
+     const blob=pdf.output('blob'),fileName='family-profile-'+String(f.houseNo||'family').replace(/[^\w-]/g,'_')+'.pdf';
+     const file=new File([blob],fileName,{type:'application/pdf'});
+     if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:'পরিবারের পূর্ণাঙ্গ প্রোফাইল',text:`${f.headName} · ঘর ${f.houseNo}`,files:[file]});}
+     else{pdf.save(fileName);if(window.showToast)showToast('পরিবারের PDF ডাউনলোড হয়েছে');}
+   }catch(e){console.error(e);alert('PDF তৈরি/শেয়ার করা যায়নি: '+(e.message||e));}
+   finally{host.innerHTML='';}
+ };
+ // Receipt QR scanner now fills the receipt search instead of opening the collection workflow.
+ // Session: keep this device authenticated for 12 hours after a successful login.
+ const SESSION_KEY='sc_device_login_session_v1',SESSION_MS=12*60*60*1000;
+ function clearSession(){try{localStorage.removeItem(SESSION_KEY)}catch(e){}}
+ function saveSession(){try{if(currentUser)localStorage.setItem(SESSION_KEY,JSON.stringify({user:currentUser,at:Date.now(),expires:Date.now()+SESSION_MS}));}catch(e){}}
+ function validateSavedUser(u){
+   if(!u||!u.id)return false;
+   try{
+     if(u.isSuperAdmin){const sp=JSON.parse(localStorage.getItem('soc_super_admin_v1')||'{}');return sp.id===u.id;}
+     if(u.isAdmin){const primary=(typeof adminCredentials!=='undefined'&&adminCredentials.id===u.id);let extra=[];try{extra=JSON.parse(localStorage.getItem('soc_super_admin_accounts_v1')||'[]')}catch(e){}return primary||extra.some(a=>a.id===u.id&&a.accountType==='Admin');}
+     return (typeof users!=='undefined'&&users.some(x=>x.id===u.id));
+   }catch(e){return false;}
+ }
+ function restoreSession(){
+   try{const s=JSON.parse(localStorage.getItem(SESSION_KEY)||'null');if(!s)return;if(!s.expires||Date.now()>s.expires||!validateSavedUser(s.user)){clearSession();return;}
+     currentUser=s.user;window.currentUser=s.user;
+     $('authModal')?.classList.add('hidden');
+     if(typeof updateUIPermissions==='function')updateUIPermissions();
+     ['renderBloodDonors','renderSkills','renderFamilies','renderDashboard'].forEach(n=>{try{if(typeof window[n]==='function')window[n]()}catch(e){}});
+     if(typeof updateIdentityBadge==='function')updateIdentityBadge();
+     document.body.classList.add('authenticated-ui');
+     if(window.showToast)showToast('🔓 এই ডিভাইসে আপনার ১২ ঘণ্টার লগইন সেশন চালু আছে।');
+   }catch(e){clearSession();}
+ }
+ const oldLogin=window.handleLogin;
+ if(typeof oldLogin==='function')window.handleLogin=function(){const before=currentUser;const out=oldLogin.apply(this,arguments);setTimeout(()=>{if(currentUser&&currentUser!==before)saveSession();else if(currentUser)saveSession();},0);return out;};
+ const oldToggle=window.toggleAuthModal;
+ if(typeof oldToggle==='function')window.toggleAuthModal=function(){const was=!!currentUser;const out=oldToggle.apply(this,arguments);if(was&&!currentUser)clearSession();return out;};
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(restoreSession,80));
+ // Local data is persisted in localStorage by the app. Mirror the complete Firebase snapshot to IndexedDB
+ // and persist a dirty-key journal so offline edits are pushed after connectivity returns.
+ const CACHE_DB='smartCommunityOfflineCache',CACHE_STORE='snapshots',DIRTY='sc_offline_dirty_keys_v1';
+ function openCache(){return new Promise((resolve,reject)=>{if(!('indexedDB'in window))return reject(Error('IndexedDB সাপোর্ট নেই'));const req=indexedDB.open(CACHE_DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(CACHE_STORE))req.result.createObjectStore(CACHE_STORE)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+ async function cacheSnapshot(){try{const keys=['soc_families_v8','soc_notices_v8','soc_committee_v8','soc_public_vis_v8','soc_users_v8','soc_monthly_fee_v8','soc_sub_payments_v8','soc_emergency_numbers_v1','soc_skill_public_rules_v1','soc_activity_logs_v1','soc_admin_profile_v1','soc_system_title_v1','soc_public_print_v1','soc_public_skill_categories_v1','soc_family_relations_v1','soc_print_settings_v1','soc_dark_mode_v1','soc_primary_admin_suspended_v1','soc_admin_id_history_v1','soc_house_plate_template_v1'];const snap={savedAt:Date.now(),data:{}};keys.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)snap.data[k]=v;});const db=await openCache();await new Promise((ok,no)=>{const tx=db.transaction(CACHE_STORE,'readwrite');tx.objectStore(CACHE_STORE).put(snap,'latest');tx.oncomplete=ok;tx.onerror=()=>no(tx.error)});db.close();return true;}catch(e){console.warn('Offline cache:',e);return false;}}
+ function showCacheProgress(){let n=$('scDeviceCacheNotice');if(!n){n=document.createElement('div');n.id='scDeviceCacheNotice';n.innerHTML='<div class="sc-cache-panel"><div style="font-size:34px;color:#059669"><i class="fa-solid fa-cloud-arrow-down"></i></div><h3 style="font-size:17px;font-weight:900;color:#0f172a">ডাটা লোডিং</h3><p id="scCacheMessage" style="font-size:12px;color:#64748b;margin-top:6px">পরিবার, সদস্য, চাঁদা ও সেটিংস ডাউনলোড হচ্ছে...</p><div class="sc-cache-track"><div id="scCacheFill" class="sc-cache-fill"></div></div><p id="scCachePercent" style="font-size:11px;font-weight:800;color:#047857">০%</p></div>';document.body.appendChild(n);}n.style.display='flex';$('scCacheFill').style.width='35%';$('scCachePercent').textContent='ডাটা প্রস্তুত করা হচ্ছে';}
+ async function finishCacheProgress(){showCacheProgress();const ok=await cacheSnapshot();$('scCacheFill').style.width='100%';$('scCachePercent').textContent=ok?'১০০%':'স্থানীয় সংরক্ষণ প্রস্তুত';$('scCacheMessage').textContent=ok?'এই ডিভাইসে ডাটা সংরক্ষিত হয়েছে। ইন্টারনেট না থাকলেও সংরক্ষিত ডাটা ব্যবহার করা যাবে।':'ব্রাউজারের স্থানীয় স্টোরেজে ডাটা সংরক্ষিত আছে।';setTimeout(()=>{$('scDeviceCacheNotice').style.display='none'},1700);}
+ const nativeSet=Storage.prototype.setItem,nativeGet=Storage.prototype.getItem;
+ Storage.prototype.setItem=function(k,v){nativeSet.call(this,k,v);if(this!==localStorage)return;const keys=['soc_families_v8','soc_notices_v8','soc_committee_v8','soc_public_vis_v8','soc_users_v8','soc_monthly_fee_v8','soc_sub_payments_v8','soc_emergency_numbers_v1','soc_skill_public_rules_v1','soc_activity_logs_v1','soc_admin_profile_v1','soc_system_title_v1','soc_public_print_v1','soc_public_skill_categories_v1','soc_family_relations_v1','soc_print_settings_v1','soc_dark_mode_v1','soc_primary_admin_suspended_v1','soc_admin_id_history_v1','soc_house_plate_template_v1'];if(keys.includes(String(k))&&!window.__scApplyingOfflineCache){try{const a=JSON.parse(nativeGet.call(localStorage,DIRTY)||'[]');if(!a.includes(String(k))){a.push(String(k));nativeSet.call(localStorage,DIRTY,JSON.stringify(a));}}catch(e){}}};
+ let cacheStarted=false;window.addEventListener('online',async()=>{try{if(!window.firebase||!firebase.database)throw Error('Firebase SDK unavailable');const db=firebase.database().ref('smartCommunity/state/data'),dirty=JSON.parse(localStorage.getItem(DIRTY)||'[]');if(dirty.length){const payload={};dirty.forEach(k=>{const raw=localStorage.getItem(k);payload[k]=raw===null?null:(['soc_monthly_fee_v8','soc_system_title_v1','soc_dark_mode_v1'].includes(k)?raw:(()=>{try{return JSON.parse(raw)}catch(e){return raw}})());});await db.update(payload);localStorage.removeItem(DIRTY);if(window.showToast)showToast('☁️ অফলাইনে করা পরিবর্তন Firebase-এ সিংক হয়েছে');}await cacheSnapshot();}catch(e){console.warn('Reconnect sync:',e);}});
+ // First successful login or Firebase snapshot triggers the local data-cache notice.
+ const baseLogin=window.handleLogin;
+ if(typeof baseLogin==='function')window.handleLogin=function(){const r=baseLogin.apply(this,arguments);setTimeout(()=>{if(currentUser&&!cacheStarted){cacheStarted=true;finishCacheProgress();}},350);return r;};
+ window.addEventListener('load',()=>{if(navigator.onLine){setTimeout(()=>{if(!cacheStarted&&localStorage.getItem('soc_families_v8')){cacheStarted=true;finishCacheProgress();}},1800);}});
+ const syncStatus=$('firebaseSyncStatus');if(syncStatus&&window.MutationObserver){new MutationObserver(()=>{if(syncStatus.dataset.state==='online'){if(!cacheStarted){cacheStarted=true;finishCacheProgress();}else cacheSnapshot();}}).observe(syncStatus,{attributes:true,attributeFilter:['data-state']});}
+})();
+</script>
+<!-- END SMART COMMUNITY NOV 12 ENHANCEMENTS -->
 
 </body>
 </html>
