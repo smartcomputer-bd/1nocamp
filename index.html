@@ -968,6 +968,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">রক্তের গ্রুপ *</label>
                         <select id="famHeadBlood" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="জানি না">জানি না</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -981,6 +982,15 @@
                     <div class="col-span-2">
                         <label class="block text-xs font-bold text-slate-700 mb-1">পেশা / স্কিল (কমা দিয়ে একাধিক ইনপুটযোগ্য) *</label>
                         <input type="text" id="famHeadOccupation" required placeholder="যেমন: ডাক্তার, শিক্ষক, ব্যবসায়ী" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">বসবাসের ধরন *</label>
+                        <select id="famResidenceType" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="মালিক">মালিক</option><option value="পৈতৃক">পৈতৃক</option><option value="ভাড়াটিয়া">ভাড়াটিয়া</option>
+                        </select>
                     </div>
                 </div>
 
@@ -6797,6 +6807,111 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 <!-- END SMART COMMUNITY NOV 12 ENHANCEMENTS -->
+
+
+<script>
+/* ===== 12 Nov 2026: residence type, receipt WhatsApp SMS, BD phone normalization, family card actions ===== */
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ // Bangladesh mobile canonical form: 8801XXXXXXXXX (without +).
+ window.normalizeBdMobile=function(value){
+   const raw=String(value??'').trim(); if(!raw)return '';
+   let d=raw.replace(/[^0-9]/g,'');
+   if(d.startsWith('88880')&&d.length===15)d=d.slice(2);
+   if(d.startsWith('00880'))d=d.slice(2);
+   if(d.startsWith('880')&&d.length===13)return d;
+   if(d.startsWith('0')&&d.length===11&&d[1]==='1')return '880'+d.slice(1);
+   if(d.length===10&&d[0]==='1')return '880'+d;
+   return raw;
+ };
+ function normalizePhones(root=document){
+   root.querySelectorAll('input[type="tel"],input[data-phone],input[name*="mobile" i],input[id*="mobile" i]').forEach(el=>{if(el.value){const n=normalizeBdMobile(el.value);if(n!==el.value)el.value=n;}});
+   root.querySelectorAll('a[href^="tel:"],a[href*="wa.me/"]').forEach(a=>{
+     const href=a.getAttribute('href')||'';
+     if(href.startsWith('tel:')){const n=normalizeBdMobile(href.slice(4));if(n)a.setAttribute('href','tel:+'+n);}
+     else {const m=href.match(/wa\.me\/([^?/#]+)/i);if(m){const n=normalizeBdMobile(m[1]);if(n)a.setAttribute('href',href.replace(m[1],n));}}
+   });
+ }
+ document.addEventListener('input',e=>{if(e.target.matches('input[type="tel"],input[data-phone],input[id*="mobile" i]')){const v=e.target.value;if(/^\+?880|^0?1/.test(v.replace(/\s/g,'')))e.target.dataset.phoneCandidate='1';}});
+ document.addEventListener('blur',e=>{if(e.target.matches('input[type="tel"],input[data-phone],input[id*="mobile" i]')&&e.target.value)e.target.value=normalizeBdMobile(e.target.value);},true);
+
+ // Add residence field into persisted family records without disturbing other saved fields.
+ const originalSave=window.saveFamily;
+ if(typeof originalSave==='function')window.saveFamily=function(){
+   const idx=Number.parseInt($('familyFormIndex')?.value??'-1',10);
+   const out=originalSave.apply(this,arguments);
+   try{const i=Number.isInteger(idx)&&idx>=0?idx:families.length-1;if(families[i]){families[i].residenceType=$('famResidenceType')?.value||families[i].residenceType||'মালিক';families[i].headMobile=normalizeBdMobile(families[i].headMobile);(families[i].members||[]).forEach(m=>{if(m.mobile)m.mobile=normalizeBdMobile(m.mobile)});saveData();}}catch(e){console.warn('Family residence/mobile update',e)}
+   return out;
+ };
+ const originalOpen=window.openFamilyModal;
+ if(typeof originalOpen==='function')window.openFamilyModal=function(){const r=originalOpen.apply(this,arguments);if($('famResidenceType'))$('famResidenceType').value='মালিক';return r;};
+ const originalEdit=window.editFamily;
+ if(typeof originalEdit==='function')window.editFamily=function(idx){const r=originalEdit.apply(this,arguments);if($('famResidenceType'))$('famResidenceType').value=families[idx]?.residenceType||'মালিক';return r;};
+ const originalView=window.viewFamilyDetail;
+ if(typeof originalView==='function')window.viewFamilyDetail=function(idx){const r=originalView.apply(this,arguments);const f=(families||[])[idx],root=$('familyViewContent');if(f&&root&&!root.querySelector('[data-residence-type]')){const box=document.createElement('p');box.dataset.residenceType='1';box.className='text-sm font-bold text-indigo-700';box.innerHTML='🏠 বসবাসের ধরন: '+esc(f.residenceType||'মালিক');const first=root.querySelector('p');if(first)first.insertAdjacentElement('afterend',box);else root.prepend(box);}return r;};
+
+ // Add 'জানি না' to the latest member blood selector renderer, preserving its existing layout and values.
+ const originalAddMember=window.addMemberInputRow;
+ if(typeof originalAddMember==='function')window.addMemberInputRow=function(data){
+   const d=data||{name:'',gender:'পুরুষ',blood:'O+',occupation:'',relation:''};
+   const row=originalAddMember.apply(this,arguments);
+   const sel=row?.querySelector('.mem-blood');
+   if(sel&&!Array.from(sel.options).some(o=>o.value==='জানি না')){const opt=document.createElement('option');opt.value='জানি না';opt.textContent='জানি না';sel.insertBefore(opt,sel.firstChild);}
+   if(sel&&d.blood==='জানি না')sel.value='জানি না';
+   return row;
+ };
+
+ // Family cards: remove PDF share, move dynamic View control to the left of Call.
+ const originalRenderFamilies=window.renderFamilies;
+ function polishFamilyCards(){
+   document.querySelectorAll('#familyGrid a[href^="tel:"],#familyGrid button[onclick*="viewFamilyDetail"],#familyGrid button[onclick*="shareFullFamily"]').forEach(()=>{});
+   const roots=[$('familiesGrid'),$('familyGrid'),$('familyList'),$('familyCards'),$('familyContainer')].filter(Boolean);
+   roots.forEach(root=>root.querySelectorAll('.bg-white.p-5,article').forEach(card=>{
+     card.querySelectorAll('button[onclick*="shareFullFamily"]').forEach(b=>b.remove());
+     const view=card.querySelector('button[onclick*="viewFamilyDetail"]');
+     const call=card.querySelector('a[href^="tel:"]');
+     const wa=card.querySelector('a[href*="wa.me/"]');
+     const sms=card.querySelector('button[onclick*="sendFamilyDueWhatsApp"]');
+     const im=sms?.getAttribute('onclick')?.match(/sendFamilyDueWhatsApp\((\d+)\)/);const fam=im?(families||[])[Number(im[1])]:null;
+     if(fam){const phone=normalizeBdMobile(fam.headMobile);if(call&&phone)call.href='tel:+'+phone;if(wa&&phone)wa.href='https://wa.me/'+phone;}
+     if(view&&call){view.innerHTML='<i class="fa-solid fa-eye"></i> ভিউ';view.className='flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-center font-bold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5';view.style.animation='scViewPulse 2s infinite';call.parentElement.insertBefore(view,call);}
+   }));
+ }
+ if(typeof originalRenderFamilies==='function')window.renderFamilies=function(){const r=originalRenderFamilies.apply(this,arguments);polishFamilyCards();normalizePhones();return r;};
+ const style=document.createElement('style');style.textContent='@keyframes scViewPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,.0)}50%{box-shadow:0 0 0 4px rgba(79,70,229,.18)}}';document.head.appendChild(style);
+
+ // Collector WhatsApp destination from the currently logged-in collector/admin profile.
+ function familyHeadWhatsApp(r,fam){const raw=r.headMobile||fam.headMobile||fam.mobile||'';const n=normalizeBdMobile(raw);return /^8801\d{9}$/.test(n)?n:'';}
+ function dueForFamily(f){try{return typeof calculateHouseDue==='function'?calculateHouseDue(f):{dueMonths:[],dueAmount:0};}catch(e){return {dueMonths:[],dueAmount:0};}}
+ window.sendReceiptCollectionWhatsApp=function(){
+   const r=window.currentViewingReceipt||currentViewingReceipt;if(!r)return alert('রশিদের তথ্য পাওয়া যায়নি।');
+   const fam=(families||[]).find(f=>String(f.houseNo).toLowerCase()===String(r.houseNo).toLowerCase())||{};
+   const to=familyHeadWhatsApp(r,fam);if(!to){alert('পরিবার কর্তার বৈধ বাংলাদেশি WhatsApp নম্বর পাওয়া যায়নি।');return;}
+   const due=dueForFamily(fam),dueMonths=(due.dueMonths||[]).map(m=>m.label||m.monthLabel||m.month||'').filter(Boolean);
+   const paid=(r.paidMonthsLabels||[]).join(', ')||'উল্লেখ নেই';
+   const msg=`🧾 *মাসিক চাঁদা আদায়ের নিশ্চিতকরণ*\n\nআসসালামু আলাইকুম।\n✅ আপনার চাঁদা সফলভাবে আদায় ও রশিদ সংরক্ষণ করা হয়েছে।\n\n🏠 *পরিবারের তথ্য*\n• ঘর নম্বর: ${r.houseNo||fam.houseNo||'—'}\n• কর্তার নাম: ${r.headName||fam.headName||'—'}\n• মোবাইল: ${normalizeBdMobile(r.headMobile||fam.headMobile)||'—'}\n\n💰 *আদায়ের বিবরণ*\n• রশিদ নম্বর: ${r.receiptNo||'—'}\n• আদায়কৃত মাস: ${paid}\n• মোট আদায়: ${Number(r.totalAmount)||0} টাকা\n• আদায়ের তারিখ: ${r.dateStr||r.dateISO||'—'} ${r.timeStr||''}\n\n📌 *বর্তমান বকেয়া*\n• বকেয়া মাস: ${dueMonths.length?dueMonths.join(', '):'কোনো বকেয়া নেই'}\n• বকেয়া মাসের সংখ্যা: ${dueMonths.length} মাস\n• মোট বকেয়া: ${Number(due.dueAmount)||0} টাকা\n\n👤 *আদায়কারী*\n• নাম: ${r.collectedBy||currentUser?.name||'—'}\n• পদবী: ${r.collectedByRole||currentUser?.designation||'—'}\n\nধন্যবাদান্তে,\n${systemTitle||'স্মার্ট কমিউনিটি'} 🙏`;
+   window.open('https://wa.me/'+to+'?text='+encodeURIComponent(msg),'_blank','noopener');
+ };
+ // Receipt action is injected by the modal footer renderer and is therefore available for both new and saved receipts.
+ function addReceiptSmsButton(){
+   const footer=$('singleReceiptActions')||$('singleReceiptViewModal')?.querySelector('.flex.justify-end.gap-2');if(!footer)return;
+   if(!footer.querySelector('[data-receipt-sms]')){const b=document.createElement('button');b.type='button';b.dataset.receiptSms='1';b.className='px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-bold';b.innerHTML='<i class="fa-brands fa-whatsapp mr-1"></i> SMS';b.onclick=window.sendReceiptCollectionWhatsApp;footer.insertBefore(b,footer.firstChild);}
+ }
+ const origOpenReceipt=window.openSingleReceiptViewModal;
+ if(typeof origOpenReceipt==='function')window.openSingleReceiptViewModal=function(){const r=origOpenReceipt.apply(this,arguments);setTimeout(addReceiptSmsButton,0);return r;};
+ document.addEventListener('click',e=>{if(e.target.closest('button[onclick*="openSingleReceiptViewModal"],button[onclick*="openReceiptFromHistory"]'))setTimeout(addReceiptSmsButton,30);});
+
+ // Normalize saved family phone data once at startup and all generated call/WhatsApp links as UI renders.
+ function normalizeStoredFamilyPhones(){try{let changed=false;(families||[]).forEach(f=>{const n=normalizeBdMobile(f.headMobile);if(n&&n!==f.headMobile){f.headMobile=n;changed=true;}(f.members||[]).forEach(m=>{if(m.mobile){const x=normalizeBdMobile(m.mobile);if(x!==m.mobile){m.mobile=x;changed=true;}}});});if(changed)saveData();}catch(e){}}
+ normalizeStoredFamilyPhones();normalizePhones();
+ const mo=new MutationObserver(records=>{for(const rec of records){if(rec.addedNodes?.length){normalizePhones(rec.target.nodeType===1?rec.target:document);break;}}});
+ if(document.body)mo.observe(document.body,{childList:true,subtree:true});
+ document.addEventListener('DOMContentLoaded',()=>{normalizeStoredFamilyPhones();normalizePhones();polishFamilyCards();addReceiptSmsButton();});
+ setTimeout(()=>{normalizeStoredFamilyPhones();normalizePhones();polishFamilyCards();},250);
+})();
+</script>
 
 </body>
 </html>
