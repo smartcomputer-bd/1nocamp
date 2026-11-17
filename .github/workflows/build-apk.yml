@@ -20,6 +20,25 @@ jobs:
           unzip -q app-source.zip -d proj
           if [ -f index.html ]; then cp index.html proj/app/src/main/assets/index.html; fi
 
+      - name: Apply app name and icon (optional files in repo root)
+        run: |
+          # app_name.txt  -> first line becomes the app name
+          if [ -f app_name.txt ]; then
+            NAME=$(head -n 1 app_name.txt | tr -d '\r' | sed 's/&/\&amp;/g;s/</\&lt;/g')
+            printf '<resources><string name="app_name">%s</string></resources>\n' "$NAME" > proj/app/src/main/res/values/strings.xml
+          fi
+          # icon.png      -> new app icon (square PNG, transparent background recommended)
+          if [ -f icon.png ]; then
+            rm -f proj/app/src/main/res/drawable/ic_fg.xml
+            mkdir -p proj/app/src/main/res/drawable-nodpi
+            convert icon.png -resize 288x288 -background none -gravity center -extent 432x432 proj/app/src/main/res/drawable-nodpi/ic_fg.png
+          fi
+          # icon_bg.txt   -> icon background colour, e.g. #F97316
+          if [ -f icon_bg.txt ]; then
+            COL=$(head -n 1 icon_bg.txt | tr -d '\r ')
+            printf '<resources><color name="ic_bg">%s</color></resources>\n' "$COL" > proj/app/src/main/res/values/colors.xml
+          fi
+
       - uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.2
